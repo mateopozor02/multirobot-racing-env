@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<robot name="legs6">
+
+<!--============================================= -->
+  <link name="leg_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>     
+    </visual>
+
+    <collision>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="4"/>
+      <inertia ixx="0.088233" iyy="0.088233" izz="0.0098" ixy="0" iyz="0" ixz="0"/>
+	    <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!--follow the link to find the inertia of the box 
+	https://en.wikipedia.org/wiki/List_of_moments_of_inertia-->
+    </inertial>
+  </link>
+
+  <link name="leg_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>     
+    </visual>
+
+    <collision>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="4"/>
+      <inertia ixx="0.088233" iyy="0.088233" izz="0.0098" ixy="0" iyz="0" ixz="0"/>
+	    <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!--follow the link to find the inertia of the box 
+	https://en.wikipedia.org/wiki/List_of_moments_of_inertia-->
+    </inertial>
+  </link>
+
+  <link name="leg_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>     
+    </visual>
+
+    <collision>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="4"/>
+      <inertia ixx="0.088233" iyy="0.088233" izz="0.0098" ixy="0" iyz="0" ixz="0"/>
+	    <origin rpy="0 0 0" xyz="0 0 0"/>
+    </inertial>
+
+  </link>
+
+  <link name="leg_4">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>     
+    </visual>
+
+    <collision>
+       <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.07" length="0.5"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="4"/>
+      <inertia ixx="0.088233" iyy="0.088233" izz="0.0098" ixy="0" iyz="0" ixz="0"/>
+	    <origin rpy="0 0 0" xyz="0 0 0"/>
+    </inertial>
+
+  </link>
+
+  <joint name="leg1_to_leg2" type="fixed">
+    <origin xyz="0.3 0.3 0" rpy="0 0 0"/>
+    <parent link="leg_1"/>
+    <child link="leg_2"/>
+  </joint>
+
+  <joint name="leg1_to_leg3" type="fixed">
+    <origin xyz="0.3 0 0" rpy="0 0 0"/>
+    <parent link="leg_1"/>
+    <child link="leg_3"/>
+  </joint>
+
+  <joint name="leg1_to_leg4" type="fixed">
+    <origin xyz="0 0.3 0" rpy="0 0 0"/>
+    <parent link="leg_1"/>
+    <child link="leg_4"/>
+  </joint>
+
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/legs6</robotNamespace>
+      <legacyModeNS>true</legacyModeNS>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+ <gazebo>
+    <plugin name="deepexpress_odom_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>/legs6/command_velocity</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>30</odometryRate>
+      <robotBaseFrame>legs6</robotBaseFrame>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="leg_1">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="1e1" />
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <gazebo reference="leg_2">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="1e1" />
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <gazebo reference="leg_3">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="1e1" />
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+  <gazebo reference="leg_4">
+    <mu1>0.0</mu1>
+    <mu2>0.0</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="1e1" />
+    <material>Gazebo/Green</material>
+  </gazebo>
+
+</robot>

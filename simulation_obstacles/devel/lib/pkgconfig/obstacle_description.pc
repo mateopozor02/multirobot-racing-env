@@ -1,0 +1,8 @@
+prefix=/home/nabih/simulation_obstacles/devel
+
+Name: obstacle_description
+Description: Description of obstacle_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

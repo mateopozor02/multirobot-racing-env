@@ -1,0 +1,2 @@
+deepexpress_description:deepexpress_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/nabih/simulation_obstacles/devel -DCMAKE_INSTALL_PREFIX=/home/nabih/simulation_obstacles/install -G Unix Makefiles

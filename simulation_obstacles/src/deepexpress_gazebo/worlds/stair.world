@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.4'>
+  <world name='default'>
+    <gravity>0 0 -9.81</gravity>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+
+    <model name='stair'>
+      <link name='link'>
+       	<!--<pose>1 0 0.0375 0 0 0</pose>-->
+	<pose>1 0 0.045 0 0 0</pose>
+	     <!-- <pose>1.8 0 0.0375 0 0 0</pose>--> <!--keti_printed-->
+
+        <collision name='collision'>
+          <geometry>
+            <box>
+		<!--<size>1 1 0.075 </size> -->
+		<!--<size>1 1 0.06 </size>-->
+		<!--<size>1 1 0.13 </size>-->
+		<size>1 1 0.09 </size>
+            </box>
+          </geometry>
+
+          <surface>
+            <friction>
+	      <ode>
+                <mu>200</mu>
+                <mu2>200.</mu2>
+                <fdir1>1 0 0</fdir1>
+              </ode>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+
+        <visual name='visual'>
+          <geometry>
+            <box>
+		<!--<size>1 1 0.075 </size> -->
+		<!--<size>1 1 0.06 </size>-->
+		<!--<size>1 1 0.13 </size>-->	      
+		<size>1 1 0.09 </size> 
+            </box>
+          </geometry>
+        </visual>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+
+        <inertial>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+          <mass>1000</mass>
+        </inertial>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+
+      <pose>0 0 0 0 0 0</pose>
+      <static>1</static>
+    </model>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include> 
+
+  </world>
+</sdf>

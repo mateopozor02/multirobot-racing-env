@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:macro name="m_joint_passive" params="name type axis_xyz origin_rpy origin_xyz parent child limit_e limit_l limit_u limit_v">
+    <joint name="${name}" type="${type}">
+      <axis xyz="${axis_xyz}" />
+      <limit effort="${limit_e}" lower="${limit_l}" upper="${limit_u}" velocity="${limit_v}" />
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+      <parent link="${parent}" />
+      <child link="${child}" />
+    </joint>
+  </xacro:macro>
+
+ <xacro:macro name="m_joint_active" params="name type axis_xyz origin_rpy origin_xyz parent child limit_e limit_l limit_u limit_v">
+    <joint name="${name}" type="${type}">
+      <axis xyz="${axis_xyz}" />
+      <limit effort="${limit_e}" lower="${limit_l}" upper="${limit_u}" velocity="${limit_v}" />
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+      <parent link="${parent}" />
+      <child link="${child}" />
+	
+    </joint>
+    <transmission name="trans_${name}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor_${name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+
+      </actuator>
+    </transmission>
+  </xacro:macro>
+
+
+  <xacro:macro name="m_link_cylinder" params="name origin_xyz origin_rpy radius length mass ixx ixy ixz iyy iyz izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <cylinder radius="${radius}" length="${length}" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <cylinder radius="${radius}" length="${length}" />
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="m_link_box" params="name origin_xyz origin_rpy size mass ixx ixy ixz iyy iyz izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <box size="${size}" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <box size="${size}" />
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="m_link_mesh" params="name origin_xyz origin_rpy origin_xyz_inertia origin_rpy_inertia meshfile meshscale mass ixx ixy ixz iyx iyy iyz izx izy izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy_inertia}" xyz="${origin_xyz_inertia}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyx="${ixy}" iyy="${iyy}" iyz="${iyz}" izx="${izx}" izy="${izy}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <mesh filename="${meshfile}" scale="${meshscale}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <mesh filename="${meshfile}" scale="${meshscale}"/>
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="m_link_mesh_wheel" params="name origin_xyz origin_rpy origin_xyz_collision origin_rpy_collision meshfile meshscale mass ixx ixy ixz iyx iyy iyz izx izy izz radius length">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy_collision}" xyz="${origin_xyz_collision}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyx="${ixy}" iyy="${iyy}" iyz="${iyz}" izx="${izx}" izy="${izy}" izz="${izz}" />
+      </inertial>
+      <collision>
+       <origin rpy="${origin_rpy_collision}" xyz="${origin_xyz_collision}" />
+      <geometry>
+       <cylinder radius="${radius}" length="${length}"/> 
+      </geometry>
+      </collision>
+  	 <visual>
+    <origin rpy="${origin_rpy_collision}" xyz="${origin_xyz_collision}" />
+      <geometry>
+       <cylinder radius="${radius}" length="${length}"/> 
+       <!--<cylinder radius="0.045" length="0.027"/> -->
+      </geometry>
+       <!-- <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <mesh filename="${meshfile}" scale="${meshscale}"/>
+        </geometry>-->
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="m_link_mesh_chassis" params="name origin_xyz origin_rpy origin_xyz_inertia origin_rpy_inertia meshfile meshscale mass ixx ixy ixz iyx iyy iyz izx izy izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy_inertia}" xyz="${origin_xyz_inertia}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyx="${ixy}" iyy="${iyy}" iyz="${iyz}" izx="${izx}" izy="${izy}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <box size="0.22 0.12 0.05" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+		<box size="0.22 0.12 0.05" />
+
+	 <!-- 	<mesh filename="${meshfile}" scale="${meshscale}"/>
+          <box size="0.24 0.12 0.045" />
+		-->
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+
+</robot>

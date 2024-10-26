@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+     
+	 
+	
+
+	<node name="torque_leftplot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args ="/deepexpress/FLwheel_Torque_controller/command 
+		       /deepexpress/joint_states/effort[0] " />
+  
+	
+<!--
+	 <node name="Normal_Force_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /force/N/vector/x
+		        /force/N/vector/y
+		        /force/N/vector/z " />
+
+
+	<node name="Normal_Force_right_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /force/N_rightside/vector/x
+		        /force/N_rightside/vector/y
+		        /force/N_rightside/vector/z " />
+
+	<node name="friction_plot"
+			pkg="rqt_plot"
+			type="rqt_plot"
+			args =" /friction/mu/vector/x
+				/friction/mu/vector/y
+				/friction/mu/vector/z " />
+
+	<node name="friction_rightplot"
+			pkg="rqt_plot"
+			type="rqt_plot"
+			args =" /friction/mu_rightside/vector/x
+				/friction/mu_rightside/vector/y
+				/friction/mu_rightside/vector/z " />
+
+	<node name="friction_req_plot"
+			pkg="rqt_plot"
+			type="rqt_plot"
+			args =" /friction/requirement/vector/x " />
+
+	<node name="friction_req_right_plot"
+			pkg="rqt_plot"
+			type="rqt_plot"
+			args =" /friction/requirement_rightside/vector/x " />
+
+ 	
+      <node name="box_angle_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /deepexpress/chassis_box_position_controller/command " /> 
+
+
+	<node name="bogie_angle_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args ="/bogie/angle/vector/x" />
+
+     
+
+
+        <node name="theta_angle_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /theta/angle/vector/x
+		        /theta/angle/vector/y " />
+       
+	
+      <node name="lineal_bogievelocity_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args ="/lineal/velocitybogie/vector/x" />
+      
+	
+ 	<node name="angular_velocity_bogie_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /angular/velocitybogie/vector/x " />	
+
+      
+        <node name="lineal_velocity_wheel_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /lineal/velocity/vector/x
+		        /lineal/velocity/vector/y
+		        /lineal/velocity/vector/z " />
+
+    <node name="angular_velocity_wheel_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /angular/velocity/vector/x
+		        /angular/velocity/vector/y
+		        /angular/velocity/vector/z " /> 
+
+  <node name="angular_velocity_wheelRIGHT_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /angular/velocity/rightwheel/vector/x
+		        /angular/velocity/rightwheel/vector/y
+		        /angular/velocity/rightwheel/vector/z " />
+
+	<node name="torque_leftplot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args ="/deepexpress/FLwheel_Torque_controller/command 
+		       /deepexpress/MLwheel_Torque_controller/command
+		       /deepexpress/RLwheel_Torque_controller/command " />
+
+       <node name="torque_rightplot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args ="/deepexpress/FRwheel_Torque_controller/command 
+		       /deepexpress/MRwheel_Torque_controller/command
+		       /deepexpress/RRwheel_Torque_controller/command " />
+
+    <node name="Contact_angle_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /contact/angle/vector/x
+		        /contact/angle/vector/y
+		        /contact/angle/vector/z " />
+
+   <node name="Contact_angleleft_plot"
+		pkg="rqt_plot"
+		type="rqt_plot"
+		args =" /contact/angle/rightwheel/vector/x
+		        /contact/angle/rightwheel/vector/y
+		        /contact/angle/rightwheel/vector/z " />-->
+
+
+   
+
+</launch>

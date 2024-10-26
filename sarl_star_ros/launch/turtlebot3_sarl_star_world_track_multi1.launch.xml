@@ -1,0 +1,146 @@
+<launch>
+   <!-- Define laser type -->
+   <arg name="laser_type" default="hokuyo" />
+
+   <!-- Define robot names -->
+   <arg name="sarl_tb3" default="sarl_tb3"/>
+   <arg name="second_tb3" default="tb3_2"/>
+   <arg name="third_tb3" default="tb3_3"/>
+
+   <!-- Define initial positions -->
+   <arg name="sarl_tb3_x_pos" default="-1.20"/>
+   <arg name="sarl_tb3_y_pos" default="10.75"/>
+   <arg name="sarl_tb3_z_pos" default="0"/>
+
+   <arg name="second_tb3_x_pos" default="-1.20"/>
+   <arg name="second_tb3_y_pos" default="10.0"/>
+   <arg name="second_tb3_z_pos" default="0"/>
+
+   <arg name="third_tb3_x_pos" default="-1.54"/>
+   <arg name="third_tb3_y_pos" default="10.6"/>
+   <arg name="third_tb3_z_pos" default="0"/>
+
+   <!-- Gazebo simulation -->
+   <arg name="world_file" default="$(find sarl_star_ros)/worlds/pista_world.world"/>
+   <include file="$(find sarl_star_ros)/launch/turtlebot3_gazebo1.launch.xml">    
+     <arg name="world_file" value="$(arg world_file)"/>
+   </include>
+
+   <!-- Common map server for both robots -->
+   <arg name="map_file" default="$(find sarl_star_ros)/map/pista.yaml"/>
+   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+     <param name="frame_id" value="map"/>
+   </node>
+
+   <!-- Publish robot state for both robots -->
+   <!-- First Robot -->
+   <?ignore
+   <group ns="$(arg sarl_tb3)">
+
+      <!-- AMCL for First Robot -->
+      <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl1.launch.xml"/>
+      <include file="$(arg custom_amcl_launch_file)">
+         <arg name="initial_pose_x" value="$(arg sarl_tb3_x_pos)"/>
+         <arg name="initial_pose_y" value="$(arg sarl_tb3_y_pos)"/>
+         <arg name="initial_pose_a" value="0"/>
+      </include>
+
+      <!-- Move Base for First Robot -->
+      <arg name="custom_param_file" default="$(find sarl_star_ros)/param/$(arg laser_type)_costmap_params.yaml"/>
+      <include file="$(find sarl_star_ros)/launch/includes/move_base/move_base1.launch.xml">
+         <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+      </include>
+
+      <!-- SARL_star Planner for First Robot -->
+      <node pkg="sarl_star_ros" type="sarl_star_node1.py" name="sarl_star_node" output="screen">
+        <remap from="/amcl_pose" to="/sarl_tb3/amcl_pose"/>
+        <remap from="/move_base/global_costmap/costmap" to="/sarl_tb3/move_base1/global_costmap/costmap"/>
+        <remap from="/cmd_vel" to="/sarl_tb3/cmd_vel"/>
+        <remap from="/move_base_simple/goal" to="/sarl_tb3/move_base_simple/goal"/>
+        <remap from="/local_goal" to="/sarl_tb3/local_goal"/>
+        <remap from="/odom" to="/sarl_tb3/odom"/>
+        <remap from="/obstacles" to="/sarl_tb3/obstacles"/>
+        <remap from="/trajectory_marker" to="/sarl_tb3/trajectory_marker"/>
+        <remap from="/vehicle_marker" to="/sarl_tb3/vehicle_marker"/>
+        <remap from="/goal_marker" to="/sarl_tb3/goal_marker"/>
+        <remap from="/action_marker" to="/sarl_tb3/action_marker"/>
+      </node>
+
+      <!-- Laser Filter for First Robot -->
+      <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter_sarl_tb3">
+        <rosparam command="load" file="$(find laser_filters)/laserscan_filter.yaml"/>
+        <remap from="/scan" to="/sarl_tb3/scan"/>
+      </node>
+
+      <!-- Obstacle Detector for First Robot -->
+      <include file="$(find obstacle_detector)/launch/nodes.launch"/>
+   </group>
+
+   <!-- Second Robot -->
+   
+   <group ns="$(arg second_tb3)">
+	
+      <!--AMCL for Second Robot-->
+      <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl2.launch.xml"/>
+      <include file="$(arg custom_amcl_launch_file)">
+         <arg name="initial_pose_x" value="$(arg second_tb3_x_pos)"/>
+         <arg name="initial_pose_y" value="$(arg second_tb3_y_pos)"/>
+         <arg name="initial_pose_a" value="0"/>
+      </include>
+
+      <!--Move Base for Second Robot -->
+      <arg name="custom_param_file" default="$(find sarl_star_ros)/param/$(arg laser_type)_costmap_params.yaml"/>
+      <include file="$(find sarl_star_ros)/launch/includes/move_base/move_base2.launch.xml">
+         <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+      </include>
+      
+      <!-- SARL_star Planner for Second Robot -->
+      <node pkg="sarl_star_ros" type="sarl_star_node2.py" name="sarl_star_node" output="screen">
+        <remap from="/amcl_pose" to="/tb3_2/amcl_pose"/>
+        <remap from="/move_base/global_costmap/costmap" to="/tb3_2/move_base2/global_costmap/costmap"/>
+        <remap from="/cmd_vel" to="/tb3_2/cmd_vel"/>
+        <remap from="/move_base_simple/goal" to="/tb3_2/move_base_simple/goal"/>
+        <remap from="/local_goal" to="/tb3_2/local_goal"/>
+        <remap from="/odom" to="/tb3_2/odom"/>
+        <remap from="/obstacles" to="/tb3_2/obstacles"/>
+        <remap from="/trajectory_marker" to="/tb3_2/trajectory_marker"/>
+        <remap from="/vehicle_marker" to="/tb3_2/vehicle_marker"/>
+        <remap from="/goal_marker" to="/tb3_2/goal_marker"/>
+        <remap from="/action_marker" to="/tb3_2/action_marker"/>
+      </node>
+
+     <!-- Laser Filter for Second Robot -->
+      <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter_tb3_2">
+        <rosparam command="load" file="$(find laser_filters)/laserscan_filter.yaml"/>
+        <remap from="/scan" to="/tb3_2/scan"/>
+      </node>
+
+      <!-- Obstacle Detector for Second Robot -->
+      <include file="$(find obstacle_detector)/launch/nodes.launch"/>
+   </group>
+   ?>
+   
+   <!-- Third Robot -->
+   
+   <!--group ns="$(arg third_tb3)"-->
+	
+      <!--AMCL for Third Robot-->
+      <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl3.launch.xml"/>
+      <include file="$(arg custom_amcl_launch_file)">
+         <arg name="initial_pose_x" value="$(arg third_tb3_x_pos)"/>
+         <arg name="initial_pose_y" value="$(arg third_tb3_y_pos)"/>
+         <arg name="initial_pose_a" value="0"/>
+      </include>
+
+      <!--Move Base for Third Robot -->
+      <include file="$(find sarl_star_ros)/launch/includes/move_base/move_base3.launch.xml"/>
+       
+
+   <!--/group-->
+   
+
+   <!-- rviz (common for both robots) -->
+   <!--node pkg="rviz" type="rviz" name="rviz" args="-d $(find sarl_star_ros)/rviz/sarl_crowd_nav_multi.rviz"/-->
+   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sarl_star_ros)/rviz/traditional.rviz"/>
+</launch>
+
