@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<launch>
+    <!--Start Gazebo with an sarl world-->
+    <include file="$(find sarl_star_ros)/launch/sarl_star_turtlebot3_sarl_world.launch"/>
+	
+	<arg name="model1"  		default="legs1"/>
+
+	<arg name="model1_x_pos" 	default="2.0"/>
+	<arg name="model1_y_pos" 	default="0.5"/>
+	<arg name="model1_z_pos" 	default="0.0"/>
+	<arg name="model1_roll"   	default="0.0"/>
+	<arg name="model1_pitch"  	default="0.0"/>
+	<arg name="model1_yaw"   	default="0.0"/>
+
+    <arg name="model2"  		default="legs2"/>
+
+	<arg name="model2_x_pos"	default="3.0"/>
+	<arg name="model2_y_pos" 	default="0.5"/>
+	<arg name="model2_z_pos" 	default="0.0"/>
+   	<arg name="model2_roll"   	default="0.0"/>
+	<arg name="model2_pitch"  	default="0.0"/>
+	<arg name="model2_yaw"   	default="0.0"/>
+
+	<arg name="model3"  		default="legs3"/>
+
+	<arg name="model3_x_pos" 	default="4.0"/>
+	<arg name="model3_y_pos" 	default="-0.5"/>
+	<arg name="model3_z_pos" 	default="0.0"/>
+	<arg name="model3_roll"   	default="0.0"/>
+	<arg name="model3_pitch"  	default="0.0"/>
+	<arg name="model3_yaw"   	default="0.0"/>
+
+   	<arg name="model4"  		default="legs4"/>
+
+	<arg name="model4_x_pos"	default="5.0"/>
+	<arg name="model4_y_pos" 	default="-0.5"/>
+	<arg name="model4_z_pos" 	default="0.0"/>
+	<arg name="model4_roll"   	default="0.0"/>
+	<arg name="model4_pitch"  	default="0.0"/>
+	<arg name="model4_yaw"   	default="0.0"/>
+
+	<arg name="model5"  		default="legs5"/>
+
+	<arg name="model5_x_pos" 	default="6.0"/>
+	<arg name="model5_y_pos" 	default="0.5"/>
+	<arg name="model5_z_pos" 	default="0.0"/>
+	<arg name="model5_roll"   	default="0.0"/>
+	<arg name="model5_pitch"  	default="0.0"/>
+	<arg name="model5_yaw"   	default="0.0"/>
+
+    <arg name="model6"  		default="legs6"/>
+
+	<arg name="model6_x_pos"	default="7.0"/>
+	<arg name="model6_y_pos" 	default="0.5"/>
+	<arg name="model6_z_pos" 	default="0.0"/>
+    <arg name="model6_roll"   	default="0.0"/>
+	<arg name="model6_pitch"  	default="0.0"/>
+	<arg name="model6_yaw"   	default="0.0"/>
+      
+ 	<!--model 1-->
+ 	<group ns = "$(arg model1)">
+  		<param name="robot_description" textfile="$(find deepexpress_description)/urdf/urdf/legs1.urdf"/>
+    	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model legs1 -x $(arg model1_x_pos) -y $(arg model1_y_pos) -z $(arg model1_z_pos) -R $(arg model1_roll) -P $(arg model1_pitch) -Y $(arg model1_yaw) -param robot_description" />
+  	</group>
+
+ 	<!--model 2-->
+	<group ns = "$(arg model2)">
+  		<param name="robot_description" textfile="$(find deepexpress_description)/urdf/urdf/legs2.urdf"/>
+    	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model legs2 -x $(arg model2_x_pos) -y $(arg model2_y_pos) -z $(arg model2_z_pos) -R $(arg model2_roll) -P $(arg model2_pitch) -Y $(arg model2_yaw) -param robot_description" />
+  	</group>
+
+	<!--model 3-->
+ 	<group ns = "$(arg model3)">
+  		<param name="robot_description" textfile="$(find deepexpress_description)/urdf/urdf/legs3.urdf"/>
+    	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model legs3 -x $(arg model3_x_pos) -y $(arg model3_y_pos) -z $(arg model3_z_pos) -R $(arg model3_roll) -P $(arg model3_pitch) -Y $(arg model3_yaw) -param robot_description" />
+  	</group>
+
+ 	<!--model 4-->
+	<group ns = "$(arg model4)">
+  		<param name="robot_description" textfile="$(find deepexpress_description)/urdf/urdf/legs4.urdf"/>
+    	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model legs4 -x $(arg model4_x_pos) -y $(arg model4_y_pos) -z $(arg model4_z_pos) -R $(arg model4_roll) -P $(arg model4_pitch) -Y $(arg model4_yaw) -param robot_description" />
+  	</group>
+
+	<!--model 5-->
+ 	<group ns = "$(arg model5)">
+  		<param name="robot_description" textfile="$(find deepexpress_description)/urdf/urdf/legs5.urdf"/>
+    	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model legs5 -x $(arg model5_x_pos) -y $(arg model5_y_pos) -z $(arg model5_z_pos) -R $(arg model5_roll) -P $(arg model5_pitch) -Y $(arg model5_yaw) -param robot_description" />
+  	</group>
+
+ 	<!--model 6-->
+	<group ns = "$(arg model6)">
+  		<param name="robot_description" textfile="$(find deepexpress_description)/urdf/urdf/legs6.urdf"/>
+    	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model legs6 -x $(arg model6_x_pos) -y $(arg model6_y_pos) -z $(arg model6_z_pos) -R $(arg model6_roll) -P $(arg model6_pitch) -Y $(arg model6_yaw) -param robot_description" />
+  	</group>
+
+	<node name="pub_motion" pkg="deepexpress_gazebo" type="motion.py"/>
+
+</launch>
+
+

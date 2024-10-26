@@ -1,0 +1,8 @@
+prefix=/home/nabih/simulation_obstacles/devel
+
+Name: deepexpress_gazebo
+Description: Description of deepexpress_gazebo
+Version: 0.1.0
+Cflags: -I/home/nabih/simulation_obstacles/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime

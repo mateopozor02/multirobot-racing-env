@@ -1,0 +1,24 @@
+<package>
+  <name>deepexpress_gazebo</name>
+  <version>0.1.0</version>
+  <description>deepexpress_gazebo</description>
+  <license>Nabih Pico</license>
+  <maintainer email="npico@g.skku.edu">Nabih Pico</maintainer>
+  <author email="npico@g.skku.edu">Nabih Pico</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>message_generation</build_depend>   <!--msg-->
+  
+  <run_depend>gazebo_plugins</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>gazebo_ros_control</run_depend>
+  <run_depend>deepexpress_control</run_depend>
+  <run_depend>deepexpress_description</run_depend>
+  <run_depend>xacro</run_depend>
+
+  <run_depend>message_runtime</run_depend><!--msg-->
+
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot>
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <legacyModeNS>true</legacyModeNS>
+      <robotNamespace>/deepexpress</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+
+ <!--http://wiki.ros.org/simulator_gazebo/Tutorials/ListOfMaterials-->
+  <!-- box  -->
+  <gazebo reference="box_bottom">
+    <material>Gazebo/Blue</material>
+  <mu1>200</mu1>
+    <mu2>100</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+    
+  </gazebo>
+
+  <!-- wheel -->
+  <gazebo reference="wheel_left_front">
+    <mu1>200</mu1>
+    <mu2>100</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+    
+
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="wheel_left_middle">
+    <mu1>200</mu1>
+    <mu2>100</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+
+
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="wheel_left_rear">
+    <mu1>200</mu1>
+    <mu2>100</mu2>
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="wheel_right_front">
+    <mu1>200</mu1>
+    <mu2>100</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+
+
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="wheel_right_middle">
+    <mu1>200</mu1>
+    <mu2>100</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="wheel_right_rear">
+    <mu1>200</mu1>
+    <mu2>100</mu2>
+
+    <kp  value="1.0e7" />
+    <kd  value="0.01" />
+    <material>Gazebo/Grey</material>
+  </gazebo> 
+  <!-- wheel -->
+  <gazebo reference="right_bogie">
+    <mu1>0.8</mu1>
+    <mu2>0.5</mu2>
+
+    <kp  value="1.0" />
+    <kd  value="0.01" /> -->
+    <material>Gazebo/Purple</material>
+<!-- Green -->
+  </gazebo> 
+
+ <gazebo reference="left_bogie">
+     <mu1>0.8</mu1>
+    <mu2>0.5</mu2>
+
+    <kp  value="1.0" />
+    <kd  value="0.01" />
+    <material>Gazebo/Purple</material>
+<!-- Green -->
+  </gazebo> 
+
+</robot>

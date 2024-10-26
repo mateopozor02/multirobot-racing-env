@@ -1,0 +1,8 @@
+prefix=/home/nabih/simulation_obstacles/install
+
+Name: gazebo_obstacles
+Description: Description of gazebo_obstacles
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
