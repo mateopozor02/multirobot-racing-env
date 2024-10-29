@@ -88,7 +88,7 @@ class SARL(MultiHumanRL):
         self.gc_oy = None
         self.max_value_list = list() ###########
         self.global_time = 0
-        self.obstacle_coords = self.get_obstacle_coords()
+        #self.obstacle_coords = self.get_obstacle_coords()
         #Store the rewards 
         self.reward = 0 
         self.r_wall_min_dist = 0 
