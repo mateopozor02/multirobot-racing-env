@@ -205,43 +205,6 @@ class CrowdSim(gym.Env):
         human.set(px, py, px, py, 0, 0, 0)
         return human
 
-
-    def generate_rectangle_static_human(self):
-        human = RectangleObstacle([0, 0], 2, 2)
-
-        #Check if the rectangle is inside the block area
-        while True:
-            px = random.uniform(-8, 18)
-            py = random.uniform(-8, 10)
-            r_width = random.uniform(1.8, 2.2)
-            r_height = random.uniform(1.5, 2.0)
-            dummy = RectangleObstacle([px, py], r_width, r_height)
-            collide = False
-            #Check collision with circle agents
-            for agent in [self.robot] + self.humans:
-                min_dist = 2*agent.radius + self.discomfort_dist
-                if check_rectangle_collision((agent.px, agent.py), min_dist, (px, py), r_width, r_height):
-                    collide = True
-                    break   # jump out of 'for' loop
-
-            #Check collision with other rectangle agents
-            for rectangle in self.rectangles:
-                if dummy.collides(rectangle):
-                    collide = True
-                    break
-
-            #Check collision with block area
-            if not rectangle_in_concentric_circles((px, py), r_width, r_height, self.block_area3[0], self.block_area3[1], self.block_area3[2]):
-                collide = True
-
-            if not collide:
-                human = dummy
-                break
-
-        return human
-
-
-
     def generate_static_human(self):
         human = Human(self.config, 'humans')
         #print(human.radius)
