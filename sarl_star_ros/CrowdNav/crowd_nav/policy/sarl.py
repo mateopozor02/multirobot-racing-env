@@ -88,7 +88,6 @@ class SARL(MultiHumanRL):
         self.gc_oy = None
         self.max_value_list = list() ###########
         self.global_time = 0
-        #self.obstacle_coords = self.get_obstacle_coords()
         #Store the rewards 
         self.reward = 0 
         self.r_wall_min_dist = 0 
@@ -125,14 +124,6 @@ class SARL(MultiHumanRL):
         if self.with_om:
             self.name = 'OM-SARL'
         logging.info('Policy: {} {} global state'.format(self.name, 'w/' if with_global_state else 'w/o'))
-
-    def write_reward_to_file(self):
-        with open('/home/heisenberg0702/sarl_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav/policy/reward.pkl', 'wb') as f:
-            pickle.dump(self.reward, f)
-
-    def get_obstacle_coords(self):
-        with open('/home/heisenberg0702/sarl_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav/policy/obstacle_coords_meters.pkl', 'rb') as f:
-            obstacle_coords = pickle.load(f)
 
         #Invert the y coordinates 
         obstacle_x_meters = [coord[0] for coord in obstacle_coords]
