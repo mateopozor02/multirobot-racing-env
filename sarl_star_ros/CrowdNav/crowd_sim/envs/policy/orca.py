@@ -127,7 +127,7 @@ class ORCA(Policy):
 
             circle_center = (8, -8)
             circle_radius1 = 10.0
-            circle_radius2 = 16.6
+            circle_radius2 = 13.0
             circle_limits1 = [(-8.6, -8), (-2, -8)]
             circle_limits2 = [(18, -8), (24.59, -8.1)]
         

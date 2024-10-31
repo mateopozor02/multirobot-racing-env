@@ -124,14 +124,6 @@ class SARL(MultiHumanRL):
         if self.with_om:
             self.name = 'OM-SARL'
         logging.info('Policy: {} {} global state'.format(self.name, 'w/' if with_global_state else 'w/o'))
-
-        #Invert the y coordinates 
-        obstacle_x_meters = [coord[0] for coord in obstacle_coords]
-        obstacle_y_meters = [-coord[1] for coord in obstacle_coords]
-
-        obstacle_coords = list(zip(obstacle_x_meters, obstacle_y_meters))
-        
-        return obstacle_coords
     
     def plot_obstacles_and_robot(self, obstacle_coords, nav):
         # Initialize the plot

@@ -109,7 +109,7 @@ class CrowdSim(gym.Env):
         #self.goal_line = [[-0.76, 6.1], [2.72, 0.49]]
         #self.goal_line = [[8, 2], [8, 8.6]]
         #self.goal_line = [[1.86, 6.34], [3.67, 2.11]]
-        self.goal_line = [[17.61, -5.25], [20.5, -4.42]]
+        self.goal_line = [[7.2, 2.28], [7.02, 4.65]]
         #self.partial_goals = [point_to_segment(8, 5, 8, 2)]
         #self.partial_goals = [(1.21, 0.79), (8, 4), (15.42, 0.21)]
         #self.partial_goals = [point_to_segment(1.86, 6.34, 3.67, 2.11), point_to_segment(19.09, 2.96, 15.83, -0.27)]
@@ -216,8 +216,8 @@ class CrowdSim(gym.Env):
             human.radius = 0.9
         human.v_pref = 0
         while True:
-            px = random.uniform(-8, 18)
-            py = random.uniform(-8, 10)
+            px = random.uniform(-5, -2)
+            py = random.uniform(-4, 2)
             collide = False
             for agent in [self.robot] + self.humans:
                 min_dist = human.radius + agent.radius + self.discomfort_dist
@@ -250,12 +250,12 @@ class CrowdSim(gym.Env):
             #px = (self.circle_radius) * np.cos(angle) + px_noise
             #py = (self.circle_radius) * np.sin(angle) + py_noise
             #print('Executing')
-            px = random.uniform(-8, 12)
-            py = random.uniform(-8, 10)
+            px = random.uniform(-5, -2)
+            py = random.uniform(-6, -3)
             #Goal for robots ahead from humans 
             #goal_x, goal_y = point_to_segment(17.98, -7.51, 24.58, -7.19)
-            goal_x = random.uniform(17.98, 24.58)
-            goal_y = random.uniform(-7.51, -4.94)
+            goal_x = random.uniform(8.5, 9)
+            goal_y = random.uniform(2, 5)
             #print('px value: ', px)
             #print('py_value', py)
             collide = False
@@ -426,16 +426,14 @@ class CrowdSim(gym.Env):
             self.human_times = [0] * (self.human_num if self.robot.policy.multiagent_training else 1)
         if not self.robot.policy.multiagent_training:
             self.train_val_sim = 'circle_crossing'
-        #if number %4 == 0:
-        #    self.train_val_sim = 'no'
-        #    self.test_sim = 'no'
-        #elif number %4 == 1:
-        #    self.train_val_sim = 'static'
-        #    self.test_sim = 'static'
-        if number %2 == 0:
+
+        if number %3 == 0:
+            self.train_val_sim = 'no'
+            self.test_sim = 'no'
+        elif number %3 == 1:
             self.train_val_sim = 'circle_crossing'
             self.test_sim = 'circle_crossing'
-        elif number %2 == 1:
+        elif number %3 == 2:
             self.train_val_sim = 'circle_static'
             self.test_sim = 'circle_static'
         if self.config.get('humans', 'policy') == 'trajnet':
@@ -443,12 +441,12 @@ class CrowdSim(gym.Env):
         else:
             counter_offset = {'train': self.case_capacity['val'] + self.case_capacity['test'],
                               'val': 0, 'test': self.case_capacity['val']}
-            goal_x, goal_y = self.partial_goals[0]
+            goal_x, goal_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
             self.prev_goal = (goal_x, goal_y)
             #dist_x, dist_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
             #dist_x, dist_y = -4, 0
             #print("Initial goal: ", dist_x, dist_y)
-            p0x, p0y = point_to_segment(-4.36, -5.32, -2.18, -5.79)
+            p0x, p0y = point_to_segment(-4.40, -5.30, -2.07, -5.81)
             #p0x, p0y = (-5, -5)
             self.robot.set(p0x, p0y, goal_x, goal_y, 0, 0, np.pi / 2)
             if self.case_counter[phase] >= 0:
@@ -672,23 +670,6 @@ class CrowdSim(gym.Env):
             R_forward = 0.09
         else:
             R_forward = -0.01
-
-        #Check if reaching partial goal
-        end_position = np.array(self.robot.compute_position(action, self.time_step))
-        reaching_partial_goal = False
-        for goal in self.partial_goals:
-            end_dpg = norm(end_position - np.array(goal))
-            if end_dpg < self.robot.radius:
-                reaching_partial_goal = True
-                break
-            else:
-                reaching_partial_goal = False
-
-        R_partial = 0
-        if reaching_partial_goal:
-            R_partial = 1
-        else:
-            R_partial = 0
 	
         #check if robot keeps moving
         if position_variation > 0.03:
@@ -724,56 +705,23 @@ class CrowdSim(gym.Env):
             info = Nothing()
 
 
-        reward = R_danger + R_forward + R_goal + R_collision + R_km + R_col_wall + R_wall_min_dist + R_stop_t+ R_partial
-        reward_values = {"Total Reward": reward,"R_dan": R_danger, "R_forward": R_forward, "R_goal": R_goal,"R_col": R_collision, "R_km": R_km, "R_col_wall": R_col_wall, "R_wall_min_dist": R_wall_min_dist, "R_stop_t": R_stop_t, "R_partial": R_partial}      
+        reward = R_danger + R_forward + R_goal + R_collision + R_km + R_col_wall + R_wall_min_dist + R_stop_t
+        reward_values = {"Total Reward": reward,"R_dan": R_danger, "R_forward": R_forward, "R_goal": R_goal,"R_col": R_collision, "R_km": R_km, "R_col_wall": R_col_wall, "R_wall_min_dist": R_wall_min_dist, "R_stop_t": R_stop_t}      
 	
         
         if update:
-            #print("Updating")
             # store state, action value and attention weights
             self.states.append([self.robot.get_full_state(), [human.get_full_state() for human in self.humans]])
             if hasattr(self.robot.policy, 'action_values'):
                 self.action_values.append(self.robot.policy.action_values)
             if hasattr(self.robot.policy, 'get_attention_weights'):
                 self.attention_weights.append(self.robot.policy.get_attention_weights())
-
-            # update all agents
-            """
-            if (ry > -0.985*rx - 0.114) and (rx < 8):
-                self.robot.set_goal_position(point_to_segment(8, 2, 8, 8.6))
-                #print("Condition 1") 
-            elif (rx >= 8) and (ry >= 0.993*rx - 15.994):
-                self.robot.set_goal_position(point_to_segment(15.095, -0.953, 19.77, 3.697))
-                #print("Condition 2")
-            elif (ry < 0.993*rx - 15.994) and (rx >= 8):
-                self.robot.set_goal_position(point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1]))
-                #print("Condition 3")
-            """
-
-            #print("Current position in crowd_sim: ", self.robot.get_position())
-            #print("Current goal in crowd_sim: ", self.robot.get_goal_position())
 	    
             self.robot.step(action)
 
-            
-            rx, ry = self.robot.get_position()
-            #Update robot goal depending on the position of the robot 
-            #if (ry > -2.33*rx + 10.6) and (ry > 0.99*rx -15.9):
-            #    self.robot.set_goal_position(self.partial_goals[1])
-            #elif (ry < 0.99*rx - 15.9) and (ry > 0.29*rx - 10.29):
-            #    self.robot.set_goal_position(self.final_goal)
-
             print("Current goal for robot: ", self.robot.get_goal_position())
             print("Current distance to goal: ", end_dg)
-
-            # Change the robot goal if it reaches the partial goal
-            if reaching_partial_goal:
-                self.num_goals_reached += 1
-                self.robot.set_goal_position(self.partial_goals[self.num_goals_reached])
-                #self.robot.set_goal_position(self.final_goal)
-                print("New goal for robot: ", self.robot.get_goal_position())
             
-
             for i, human_action in enumerate(human_actions):
                 #posx, posy = self.humans[i].get_position()
                 #gx, gy = self.humans[i].get_goal_position() 
@@ -801,9 +749,7 @@ class CrowdSim(gym.Env):
                         human.set_goal_position(new_goal)
                     if self.train_val_sim == 'circle_crossing' or self.test_sim == 'circle_crossing':
                         pass
-                        #goal = human.get_goal_position()
-                        #new_goal = [-goal[0],-goal[1]]
-                        #human.set_goal_position(new_goal)
+                        
                     elif self.train_val_sim == 'square_static' or self.test_sim == 'square_static':
                         if i >= 2:
                             goal = human.get_goal_position()
@@ -815,15 +761,7 @@ class CrowdSim(gym.Env):
                     elif self.train_val_sim == 'circle_static' or self.test_sim == 'circle_static':
                         if i >= 2:
                             goal = human.get_goal_position()
-                            #if goal[0] == self.block_area1[2][0] - human.radius - 1:
-                            #    new_goal = [-self.circle_radius,goal[1]]
-                            #elif goal[0] == self.block_area2[0][0] + human.radius + 1:
-                            #    new_goal = [self.circle_radius, goal[1]]
-                            #elif goal[1] == self.block_area1[2][1] - human.radius - 1:
-                            #    new_goal = [goal[0], -self.circle_radius]
-                            #else:
-                            #    new_goal = [goal[0], self.circle_radius]
-                            #human.set_goal_position(new_goal)
+                            
 
             # compute the observation
             if self.robot.sensor == 'coordinates':
@@ -907,19 +845,13 @@ class CrowdSim(gym.Env):
         elif mode == 'video':
             fig, ax = plt.subplots(figsize=(7, 7))
             ax.tick_params(labelsize=16)
-            ax.set_xlim(-9, 25) # NABIH map size
-            ax.set_ylim(-9, 10)  # NABIH map size
+            ax.set_xlim(-8, 8) # NABIH map size
+            ax.set_ylim(-8, 8)  # NABIH map size
             ax.set_xlabel('x position (m)', fontsize=16)  # NABIH legend x
             ax.set_ylabel('y position (m)', fontsize=16)  # NABIH legend y
             ax.set_aspect('equal')  # Set aspect ratio to be equal
             # add robot and its goal
             robot_positions = [state[0].position for state in self.states]
-            #Draw the rectangles for the obstacles
-            #for rectangle in self.rectangles:
-            #    vertices = rectangle.get_vertices()
-            #    ax.add_patch(patches.Polygon(vertices, fill=True, color='black'))
-            # draw a star at the goal position (0,4)
-            #goal = mlines.Line2D([4], [4], color=goal_color, marker='*', linestyle='None', markersize=15, label='Goal')
             line_legend = mlines.Line2D([4], [4], color='orange', linestyle='-', markersize=15, label='Goal line')
             robot_legend = mlines.Line2D([0], [4], color=robot_color, marker='o', linestyle='None', markersize=15, label='Goal') # NABIH marker
             robot = plt.Circle(robot_positions[0], self.robot.radius, fill=False, color=robot_color)
