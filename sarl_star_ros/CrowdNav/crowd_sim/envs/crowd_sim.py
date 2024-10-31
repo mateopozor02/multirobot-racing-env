@@ -103,18 +103,21 @@ class CrowdSim(gym.Env):
         self.R_min = config.getfloat('reward', 'R_min')
         # Please input four points to make block area
         # Please input the center points, radius1, radius2
-        #self.block_area1 = [[-2,5],[-6,5],[-6,2],[-2,2]]
-        #self.block_area2 = [[6.5,-6],[2.5,-6],[2.5,-9],[6.5,-9]]
-        self.block_area3 = [[8,-8],10,16.6]
+        self.block_area1 = [[-2,5],[-6,5],[-6,2],[-2,2]]
+        self.block_area2 = [[6.5,-6],[2.5,-6],[2.5,-9],[6.5,-9]]
+        self.block_area3 = [[8,-8],10, 13]
         #self.goal_line = [[-0.76, 6.1], [2.72, 0.49]]
         #self.goal_line = [[8, 2], [8, 8.6]]
         #self.goal_line = [[1.86, 6.34], [3.67, 2.11]]
-        self.goal_line = [[17.61, -5.25], [23.96, -3.44]]
-        #self.partial_goals = [point_to_segment(1.86, 6.34, 3.67, 2.11)]
-        self.partial_goals = [point_to_segment(1.86, 6.34, 3.67, 2.11), point_to_segment(19.09, 2.96, 15.83, -0.27)]
+        self.goal_line = [[17.61, -5.25], [20.5, -4.42]]
+        #self.partial_goals = [point_to_segment(8, 5, 8, 2)]
+        #self.partial_goals = [(1.21, 0.79), (8, 4), (15.42, 0.21)]
+        #self.partial_goals = [point_to_segment(1.86, 6.34, 3.67, 2.11), point_to_segment(19.09, 2.96, 15.83, -0.27)]
 
         #self.partial_goals = [point_to_segment(-3.11, 2.95, 0.16, -0.27), point_to_segment(8, 7.6, 8, 3), point_to_segment(19.09, 2.96, 15.83, -0.27)]
-        self.final_goal = list(point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1]))
+        #self.final_goal = list(point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1]))
+        #self.num_goals_reached = 0
+        #self.prev_goal = None
         
         
         if self.config.get('humans', 'policy') == 'orca':
@@ -161,34 +164,12 @@ class CrowdSim(gym.Env):
                 self.humans.append(self.generate_fake_human())
         elif rule == 'static':
             self.humans = []
-            self.rectangles = []
             for i in range(human_num):
-                if i < 2:
-                    self.rectangles.append(self.generate_rectangle_static_human())
-                else:
-                    self.humans.append(self.generate_circle_crossing_human())
-            #Write the rectangle obstacles to a file
-            with open('rectangle_obstacles.txt', 'w') as f:
-                for rectangle in self.rectangles:
-                    #Rectangle vertices
-                    vertices = rectangle.get_vertices()
-                    f.write(str(vertices[0][0]) + ' ' + str(vertices[0][1]) + ' ' + str(vertices[1][0]) + ' ' + str(vertices[1][1]) + ' ' + str(vertices[2][0]) + ' ' + str(vertices[2][1]) + ' ' + str(vertices[3][0]) + ' ' + str(vertices[3][1]) + '\n')
-            f.close() 
-            #self.humans = []
-            #for i in range(human_num):
-            #    self.humans.append(self.generate_static_human())
+                self.humans.append(self.generate_static_human())
         elif rule == 'circle_crossing':
             self.humans = []
             for i in range(human_num):
-                self.humans.append(self.generate_circle_crossing_human())
-                #print('generating circle crossing human')
-            #self.humans[0].set_position((-7.2, -6))
-            #self.humans[1].set_position((-6.53, -6))
-            #self.humans[2].set_position((-5.86, -6))
-            #self.humans[3].set_position((-4.52, -6))
-            #self.humans[4].set_position((-3.85, -6))
-            #self.humans[5].set_position((-3.18, -6))
-            #self.humans[6].set_position((-2.51, -6))
+                self.humans.append(self.generate_circle_crossing_human()) 
         elif rule == 'circle_static':
             self.humans = []
             for i in range(human_num):
@@ -500,10 +481,11 @@ class CrowdSim(gym.Env):
             counter_offset = {'train': self.case_capacity['val'] + self.case_capacity['test'],
                               'val': 0, 'test': self.case_capacity['val']}
             goal_x, goal_y = self.partial_goals[0]
+            self.prev_goal = (goal_x, goal_y)
             #dist_x, dist_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
             #dist_x, dist_y = -4, 0
             #print("Initial goal: ", dist_x, dist_y)
-            p0x, p0y = point_to_segment(-7.35, -4.69, -2.65, -5.69)
+            p0x, p0y = point_to_segment(-4.36, -5.32, -2.18, -5.79)
             #p0x, p0y = (-5, -5)
             self.robot.set(p0x, p0y, goal_x, goal_y, 0, 0, np.pi / 2)
             if self.case_counter[phase] >= 0:
@@ -810,14 +792,24 @@ class CrowdSim(gym.Env):
 	    
             self.robot.step(action)
 
-            """
+            
             rx, ry = self.robot.get_position()
             #Update robot goal depending on the position of the robot 
-            if (ry > -2.33*rx + 10.6) and (ry > 0.99*rx -15.9):
-                self.robot.set_goal_position(self.partial_goals[1])
-            elif (ry < 0.99*rx - 15.9) and (ry > 0.29*rx - 10.29):
-                self.robot.set_goal_position(self.final_goal)
-            """
+            #if (ry > -2.33*rx + 10.6) and (ry > 0.99*rx -15.9):
+            #    self.robot.set_goal_position(self.partial_goals[1])
+            #elif (ry < 0.99*rx - 15.9) and (ry > 0.29*rx - 10.29):
+            #    self.robot.set_goal_position(self.final_goal)
+
+            print("Current goal for robot: ", self.robot.get_goal_position())
+            print("Current distance to goal: ", end_dg)
+
+            # Change the robot goal if it reaches the partial goal
+            if reaching_partial_goal:
+                self.num_goals_reached += 1
+                self.robot.set_goal_position(self.partial_goals[self.num_goals_reached])
+                #self.robot.set_goal_position(self.final_goal)
+                print("New goal for robot: ", self.robot.get_goal_position())
+            
 
             for i, human_action in enumerate(human_actions):
                 #posx, posy = self.humans[i].get_position()
