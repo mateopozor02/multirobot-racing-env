@@ -719,8 +719,8 @@ class CrowdSim(gym.Env):
 	    
             self.robot.step(action)
 
-            print("Current goal for robot: ", self.robot.get_goal_position())
-            print("Current distance to goal: ", end_dg)
+            #print("Current goal for robot: ", self.robot.get_goal_position())
+            #print("Current distance to goal: ", end_dg)
             
             for i, human_action in enumerate(human_actions):
                 #posx, posy = self.humans[i].get_position()
