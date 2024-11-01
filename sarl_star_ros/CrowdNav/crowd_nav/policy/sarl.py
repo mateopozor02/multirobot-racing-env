@@ -233,7 +233,7 @@ class SARL(MultiHumanRL):
                     rotated_batch_input = torch.cat([rotated_batch_input, occupancy_maps], dim=2)
                 # VALUE UPDATE
                 next_state_value = self.model(rotated_batch_input).data.item()
-                print("Next state value: ", next_state_value)
+                #print("Next state value: ", next_state_value)
                 # Equation (5)
                 value = self.reward + pow(self.gamma, self.time_step * state.self_state.v_pref) * next_state_value
                 self.action_values.append(value)
