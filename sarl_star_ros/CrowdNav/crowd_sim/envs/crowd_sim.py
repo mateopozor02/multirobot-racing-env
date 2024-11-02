@@ -698,15 +698,15 @@ class CrowdSim(gym.Env):
         elif self.global_time >= self.time_limit - 1:
             done = True
             info = Timeout()
-            timeout = -0.5
+            R_timeout = -5
             #R_for += 3*(1 / (1+np.exp(3*end_dg-5.5)))**0.1
         else:
             done = False
             info = Nothing()
 
 
-        reward = R_danger + R_forward + R_goal + R_collision + R_km + R_col_wall + R_wall_min_dist + R_stop_t
-        reward_values = {"Total Reward": reward,"R_dan": R_danger, "R_forward": R_forward, "R_goal": R_goal,"R_col": R_collision, "R_km": R_km, "R_col_wall": R_col_wall, "R_wall_min_dist": R_wall_min_dist, "R_stop_t": R_stop_t}      
+        reward = R_danger + R_forward + R_goal + R_collision + R_km + R_col_wall + R_wall_min_dist + R_stop_t + R_timeout
+        reward_values = {"Total Reward": reward,"R_dan": R_danger, "R_forward": R_forward, "R_goal": R_goal,"R_col": R_collision, "R_km": R_km, "R_col_wall": R_col_wall, "R_wall_min_dist": R_wall_min_dist, "R_stop_t": R_stop_t, "R_timeout": R_timeout}      
 	
         
         if update:
