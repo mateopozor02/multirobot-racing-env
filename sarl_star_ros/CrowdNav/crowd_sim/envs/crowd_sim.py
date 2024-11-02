@@ -589,6 +589,7 @@ class CrowdSim(gym.Env):
         #R_stop = 0
         dot_prod = 0
         R_col_wall = 0
+        R_timeout = 0
         #timeout = 0
         for i, human in enumerate(self.humans):
             if (human.vx == 0 and human.vy == 0):
