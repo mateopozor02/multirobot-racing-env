@@ -37,41 +37,68 @@ def main():
         with open(log_file, 'r') as file:
             log = file.read()
 
-        val_pattern = r"VAL   in episode (?P<episode>\d+) has success rate: (?P<sr>[0-1].\d+), " \
-                      r"collision rate: (?P<cr>[0-1].\d+), nav time: (?P<time>\d+.\d+), " \
-                      r"total reward: (?P<reward>[-+]?\d+.\d+)"
+        val_pattern = r"VAL\s+in episode\s+(?P<episode>\d+)\s+has success rate:\s+(?P<sr>[01]\.\d+),\s+" \
+              r"collision rate:\s+(?P<cr>[01]\.\d+),\s+timeout rate:\s+(?P<tr>[01]\.\d+),\s+" \
+              r"collisionwall rate:\s+(?P<cwr>[01]\.\d+),\s+nav time:\s+(?P<time>\d+\.\d+),\s+" \
+              r"average speed:\s+(?P<speed>\d+\.\d+),\s+path length:\s+(?P<pl>\d+\.\d+),\s+" \
+              r"total reward:\s+(?P<reward>[-+]?\d+\.\d+)"
+
         val_episode = []
         val_sr = []
         val_cr = []
+        val_tr = []
+        val_cwr = []
         val_time = []
+        val_speed = []
+        val_pl = []
         val_reward = []
         for r in re.findall(val_pattern, log):
+            #print(r)
             val_episode.append(int(r[0]))
             val_sr.append(float(r[1]))
             val_cr.append(float(r[2]))
-            val_time.append(float(r[3]))
-            val_reward.append(float(r[4]))
+            val_tr.append(float(r[3]))
+            val_cwr.append(float(r[4]))
+            val_time.append(float(r[5]))
+            val_speed.append(float(r[6]))
+            val_pl.append(float(r[7]))
+            val_reward.append(float(r[8]))
 
-        print(val_sr)
+        #print(val_reward)
 
-        train_pattern = r"TRAIN in episode (?P<episode>\d+) has success rate: (?P<sr>[0-1].\d+), " \
-                        r"collision rate: (?P<cr>[0-1].\d+), nav time: (?P<time>\d+.\d+), " \
-                        r"total reward: (?P<reward>[-+]?\d+.\d+)"
+        train_pattern = r"TRAIN in episode (?P<episode>\d+) has success rate: (?P<sr>[01]\.\d+),\s+" \
+                r"collision rate: (?P<cr>[01]\.\d+),\s+timeout rate:\s+(?P<tr>[01]\.\d+),\s+" \
+                r"collisionwall rate:\s+(?P<cwr>[01]\.\d+),\s+nav time:\s+(?P<time>\d+\.\d+),\s+" \
+                r"average speed:\s+(?P<speed>\d+\.\d+),\s+path length:\s+(?P<pl>\d+\.\d+),\s+" \
+                r"total reward:\s+(?P<reward>[-+]?\d+\.\d+)"
+        
         train_episode = []
         train_sr = []
         train_cr = []
+        train_tr = []
+        train_cwr = []
         train_time = []
+        train_speed = []
+        train_pl = []
         train_reward = []
         for r in re.findall(train_pattern, log):
             train_episode.append(int(r[0]))
             train_sr.append(float(r[1]))
             train_cr.append(float(r[2]))
-            train_time.append(float(r[3]))
-            train_reward.append(float(r[4]))
+            train_tr.append(float(r[3]))
+            train_cwr.append(float(r[4]))
+            train_time.append(float(r[5]))
+            train_speed.append(float(r[6]))
+            train_pl.append(float(r[7]))
+            train_reward.append(float(r[8]))
         train_episode = train_episode[:max_episodes]
         train_sr = train_sr[:max_episodes]
         train_cr = train_cr[:max_episodes]
+        train_tr = train_tr[:max_episodes]
+        train_cwr = train_cwr[:max_episodes]
         train_time = train_time[:max_episodes]
+        train_speed = train_speed[:max_episodes]
+        train_pl = train_pl[:max_episodes]
         train_reward = train_reward[:max_episodes]
 
         # smooth training plot
@@ -88,6 +115,7 @@ def main():
                 ax1.plot(range(len(train_sr_smooth)), train_sr_smooth)
                 ax1_legends.append(models[i])
             if args.plot_val:
+                #print("EXECUTING")
                 ax1.plot(val_episode, val_sr)
                 ax1_legends.append(models[i])
 
@@ -145,14 +173,14 @@ def main():
                 #ax4_legends.append(models[i])
             if args.plot_val:
                 ax4.plot(val_episode, val_reward)
-                #ax4_legends.append(models[i])
+                ax4_legends.append(models[i])
 
             ax4.legend(ax4_legends)
             ax4.set_xlabel('Number of episodes')
-            ax4.set_ylabel('Time to reach the goal(s)')
+            ax4.set_ylabel('Reward')
             ax4.set_title('')
             plt.grid(True)
-            plt.ylim([5, 60]) 
+            plt.ylim([0, 5]) 
 
     plt.show()
 
