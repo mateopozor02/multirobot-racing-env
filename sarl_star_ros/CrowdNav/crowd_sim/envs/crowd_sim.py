@@ -441,13 +441,13 @@ class CrowdSim(gym.Env):
         else:
             counter_offset = {'train': self.case_capacity['val'] + self.case_capacity['test'],
                               'val': 0, 'test': self.case_capacity['val']}
-            goal_x, goal_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
-            self.prev_goal = (goal_x, goal_y)
+            #goal_x, goal_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
+            goal_x, goal_y = (7.09, 3.64)
             #dist_x, dist_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
             #dist_x, dist_y = -4, 0
             #print("Initial goal: ", dist_x, dist_y)
-            p0x, p0y = point_to_segment(-4.40, -5.30, -2.07, -5.81)
-            #p0x, p0y = (-5, -5)
+            #p0x, p0y = point_to_segment(-4.40, -5.30, -2.07, -5.81)
+            p0x, p0y = (-3.20, -5.56)
             self.robot.set(p0x, p0y, goal_x, goal_y, 0, 0, np.pi / 2)
             if self.case_counter[phase] >= 0:
                 np.random.seed(counter_offset[phase] + self.case_counter[phase]) #training
