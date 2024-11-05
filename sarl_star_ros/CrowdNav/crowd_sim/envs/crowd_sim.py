@@ -109,7 +109,7 @@ class CrowdSim(gym.Env):
         #self.goal_line = [[-0.76, 6.1], [2.72, 0.49]]
         #self.goal_line = [[8, 2], [8, 8.6]]
         #self.goal_line = [[1.86, 6.34], [3.67, 2.11]]
-        self.goal_line = [[7.2, 2.28], [7.02, 4.65]]
+        self.goal_line = [[3.29, 3.78], [4.17, 1.57]]
         #self.partial_goals = [point_to_segment(8, 5, 8, 2)]
         #self.partial_goals = [(1.21, 0.79), (8, 4), (15.42, 0.21)]
         #self.partial_goals = [point_to_segment(1.86, 6.34, 3.67, 2.11), point_to_segment(19.09, 2.96, 15.83, -0.27)]
@@ -441,13 +441,10 @@ class CrowdSim(gym.Env):
         else:
             counter_offset = {'train': self.case_capacity['val'] + self.case_capacity['test'],
                               'val': 0, 'test': self.case_capacity['val']}
-            #goal_x, goal_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
-            goal_x, goal_y = (7.09, 3.64)
-            #dist_x, dist_y = point_to_segment(self.goal_line[0][0], self.goal_line[0][1], self.goal_line[1][0], self.goal_line[1][1])
-            #dist_x, dist_y = -4, 0
-            #print("Initial goal: ", dist_x, dist_y)
-            #p0x, p0y = point_to_segment(-4.40, -5.30, -2.07, -5.81)
+           
+            goal_x, goal_y = (3.35, 3.64)
             p0x, p0y = (-3.20, -5.56)
+
             self.robot.set(p0x, p0y, goal_x, goal_y, 0, 0, np.pi / 2)
             if self.case_counter[phase] >= 0:
                 np.random.seed(counter_offset[phase] + self.case_counter[phase]) #training
@@ -661,14 +658,14 @@ class CrowdSim(gym.Env):
         d2 = self.block_area3[2] - math.sqrt((self.block_area3[0][0] - position[0])**2 + (self.block_area3[0][1] - position[1])**2)
         min_distance = min(d1, d2)
         min_distance -= self.robot.radius
-        if min_distance < 0.1:
+        if min_distance < 0.15:
             R_wall_min_dist = -0.1
             min_wall_bool = True
         else:
             R_wall_min_dist = 0.0025
 
         if end_dg - start_dg < -0.01:
-            R_forward = 0.09
+            R_forward = 0.05
         else:
             R_forward = -0.01
 	
@@ -676,31 +673,26 @@ class CrowdSim(gym.Env):
         if position_variation > 0.03:
             R_km = 0.01
         else:
-            R_km = -0.07
+            R_km = -0.05
 
         #R_for = 0
         if reaching_goal:
             done = True
             info = ReachGoal()
-            R_goal = 10
-            #R_goal = self.success_reward
+            R_goal = self.success_reward
             left_path = 0
         elif collision_wall:
             done = True
-            R_col_wall = -1
-            #R_col_wall = self.collision_wall_penalty
+            R_col_wall = self.collision_wall_penalty
             info = CollisionWall()
-            #R_for = 3*(1 / (1+np.exp(3*end_dg-5.5)))**0.1
         elif collision:
             done = True
             info = Collision()
             R_collision = self.collision_penalty
-            #R_for += 3*(1 / (1+np.exp(3*end_dg-5.5)))**0.1
         elif self.global_time >= self.time_limit - 1:
             done = True
             info = Timeout()
             R_timeout = -5
-            #R_for += 3*(1 / (1+np.exp(3*end_dg-5.5)))**0.1
         else:
             done = False
             info = Nothing()
@@ -724,10 +716,6 @@ class CrowdSim(gym.Env):
             #print("Current distance to goal: ", end_dg)
             
             for i, human_action in enumerate(human_actions):
-                #posx, posy = self.humans[i].get_position()
-                #gx, gy = self.humans[i].get_goal_position() 
-                #print(gx, gy)
-                #print(posx, posy)
                 self.humans[i].step(human_action)
             self.global_time += self.time_step
             for i, human in enumerate(self.humans):
