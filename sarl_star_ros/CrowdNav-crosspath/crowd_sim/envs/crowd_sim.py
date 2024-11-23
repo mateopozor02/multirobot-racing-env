@@ -853,8 +853,8 @@ class CrowdSim(gym.Env):
         x_offset = 0.11
         y_offset = 0.11
         cmap = plt.cm.get_cmap('hsv', 10)
-        robot_color = 'purple'
-        goal_color = 'orange'
+        robot_color = 'teal'
+        goal_color = 'yellow'
         arrow_color = 'red'
         arrow_style = patches.ArrowStyle("->", head_length=2, head_width=2)
 
@@ -935,13 +935,13 @@ class CrowdSim(gym.Env):
                 ax.add_artist(human)
                 ax.add_artist(human_numbers[i])
             for i in range(len(self.block_area1)):
-                plt.plot([self.block_area1[i][0],self.block_area1[(i+1)%len(self.block_area1)][0]],[self.block_area1[i][1],self.block_area1[(i+1)%len(self.block_area1)][1]], color = 'red')
+                plt.plot([self.block_area1[i][0],self.block_area1[(i+1)%len(self.block_area1)][0]],[self.block_area1[i][1],self.block_area1[(i+1)%len(self.block_area1)][1]], color = 'b')
             for i in range(len(self.block_area2)):
-                plt.plot([self.block_area2[i][0],self.block_area2[(i+1)%len(self.block_area2)][0]],[self.block_area2[i][1],self.block_area2[(i+1)%len(self.block_area2)][1]], color = 'red')
+                plt.plot([self.block_area2[i][0],self.block_area2[(i+1)%len(self.block_area2)][0]],[self.block_area2[i][1],self.block_area2[(i+1)%len(self.block_area2)][1]], color = 'b')
             for i in range(len(self.block_area3)):
-                plt.plot([self.block_area3[i][0],self.block_area3[(i+1)%len(self.block_area3)][0]],[self.block_area3[i][1],self.block_area3[(i+1)%len(self.block_area3)][1]], color = 'red')
+                plt.plot([self.block_area3[i][0],self.block_area3[(i+1)%len(self.block_area3)][0]],[self.block_area3[i][1],self.block_area3[(i+1)%len(self.block_area3)][1]], color = 'b')
             for i in range(len(self.block_area2)):
-                plt.plot([self.block_area4[i][0],self.block_area4[(i+1)%len(self.block_area4)][0]],[self.block_area4[i][1],self.block_area4[(i+1)%len(self.block_area4)][1]], color = 'red')
+                plt.plot([self.block_area4[i][0],self.block_area4[(i+1)%len(self.block_area4)][0]],[self.block_area4[i][1],self.block_area4[(i+1)%len(self.block_area4)][1]], color = 'b')
             
             
             
