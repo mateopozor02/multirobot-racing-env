@@ -671,8 +671,8 @@ class CrowdSim(gym.Env):
         x_offset = 0.11
         y_offset = 0.11
         cmap = plt.cm.get_cmap('hsv', 10)
-        robot_color = 'yellow'
-        goal_color = 'red'
+        robot_color = 'teal'
+        goal_color = 'orange'
         arrow_color = 'red'
         arrow_style = patches.ArrowStyle("->", head_length=4, head_width=2)
 
@@ -738,10 +738,11 @@ class CrowdSim(gym.Env):
             robot_positions = [state[0].position for state in self.states]
             # draw a star at the goal position (0,4)
             goal = mlines.Line2D([0], [4], color=goal_color, marker='*', linestyle='None', markersize=15, label='Goal')
-            robot = plt.Circle(robot_positions[0], self.robot.radius, fill=True, color=robot_color)
+            robot = plt.Circle(robot_positions[0], self.robot.radius, fill=False, color=robot_color)
             ax.add_artist(robot)
             ax.add_artist(goal)
-            plt.legend([robot, goal], ['Robot', 'Goal'], fontsize=16, numpoints=1)   # numpoints=1: only 1 star in the legend
+            robot_legend = mlines.Line2D([0], [4], color=robot_color, marker='o', linestyle='None', markersize=15, label='Goal')
+            plt.legend([robot_legend, goal], ['Robot', 'Goal'], fontsize=16, numpoints=1)   # numpoints=1: only 1 star in the legend
 
             # add humans and their numbers
             human_positions = [[state[1][j].position for j in range(len(self.humans))] for state in self.states]
@@ -808,6 +809,15 @@ class CrowdSim(gym.Env):
                     if self.attention_weights is not None:
                         human.set_color(str(self.attention_weights[frame_num][i]))
                         attention_scores[i].set_text('human {}: {:.2f}'.format(i, self.attention_weights[frame_num][i]))
+
+                human_traj_update = [mlines.Line2D([(human_positions[frame_num][i])[0]], [(human_positions[frame_num][i])[1]], color=cmap(i), marker='.', linestyle='None', markersize=4) for i in range(len(self.humans))]     #nabih human trajectory
+                robot_traj_update = [mlines.Line2D([robot.center[0]], [robot.center[1]], color='C4', marker='.', linestyle='None', markersize=4)] 
+
+                for trajec in human_traj_update:
+                    ax.add_artist(trajec)           
+                for r_trajec in robot_traj_update: 
+            
+                    ax.add_artist(r_trajec) 
 
                 time.set_text('Time: {:.2f}'.format(frame_num * self.time_step))
 
