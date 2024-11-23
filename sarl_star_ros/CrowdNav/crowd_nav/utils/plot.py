@@ -23,7 +23,7 @@ def main():
     args = parser.parse_args()
 
     # define the names of the models you want to plot and the longest episodes you want to show
-    models = ['model 1', 'model 2', 'model 3', 'model 4']
+    models = ['SARL*', 'model 2', 'model 3', 'model 4']
     models3 = ['model 3']
     max_episodes = 20000
 
@@ -113,16 +113,16 @@ def main():
                 _, ax1 = plt.subplots()
             if args.plot_train:
                 ax1.plot(range(len(train_sr_smooth)), train_sr_smooth)
-                ax1_legends.append(models[i])
+                ax1_legends.append("Training")
             if args.plot_val:
                 #print("EXECUTING")
                 ax1.plot(val_episode, val_sr)
-                ax1_legends.append(models[i])
+                ax1_legends.append("Validation")
 
             ax1.legend(ax1_legends)
             ax1.set_xlabel('Number of episodes')
             ax1.set_ylabel('Success Rate')
-            ax1.set_title('')
+            ax1.set_title("SARL*")
             plt.grid(True)
             plt.xlim([0, 5000])
             plt.ylim([0.2, 1.0]) 
@@ -168,17 +168,18 @@ def main():
         if args.plot_reward:
             if ax4 is None:
                 _, ax4 = plt.subplots()
+                ax4_legends.append("Training")
             if args.plot_train:
                 ax4.plot(range(len(train_reward_smooth)), train_reward_smooth)
                 #ax4_legends.append(models[i])
             if args.plot_val:
                 ax4.plot(val_episode, val_reward)
-                ax4_legends.append(models[i])
+                ax4_legends.append("Validation")
 
             ax4.legend(ax4_legends)
             ax4.set_xlabel('Number of episodes')
             ax4.set_ylabel('Reward')
-            ax4.set_title('')
+            ax4.set_title('SARL*')
             plt.grid(True)
             plt.ylim([0, 5]) 
 
