@@ -34,7 +34,6 @@
 
    <!-- Publish robot state for both robots -->
    <!-- First Robot -->
-   <?ignore
    <group ns="$(arg sarl_tb3)">
 
       <!-- AMCL for First Robot -->
@@ -118,29 +117,9 @@
       <!-- Obstacle Detector for Second Robot -->
       <include file="$(find obstacle_detector)/launch/nodes.launch"/>
    </group>
-   ?>
-   
-   <!-- Third Robot -->
-   
-   <!--group ns="$(arg third_tb3)"-->
-	
-      <!--AMCL for Third Robot-->
-      <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl3.launch.xml"/>
-      <include file="$(arg custom_amcl_launch_file)">
-         <arg name="initial_pose_x" value="$(arg third_tb3_x_pos)"/>
-         <arg name="initial_pose_y" value="$(arg third_tb3_y_pos)"/>
-         <arg name="initial_pose_a" value="0"/>
-      </include>
-
-      <!--Move Base for Third Robot -->
-      <include file="$(find sarl_star_ros)/launch/includes/move_base/move_base3.launch.xml"/>
-       
-
-   <!--/group-->
-   
 
    <!-- rviz (common for both robots) -->
-   <!--node pkg="rviz" type="rviz" name="rviz" args="-d $(find sarl_star_ros)/rviz/sarl_crowd_nav_multi.rviz"/-->
-   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sarl_star_ros)/rviz/traditional.rviz"/>
+   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sarl_star_ros)/rviz/sarl_crowd_nav_multi.rviz"/>
+   <!--node pkg="rviz" type="rviz" name="rviz" args="-d $(find sarl_star_ros)/rviz/traditional.rviz"/-->
 </launch>
 

@@ -30,7 +30,6 @@
     <arg name="debug" value="false"/>
   </include>
 
-  <?ignore
   <!-- First Robot (sarl_tb3) -->
   <group ns="$(arg sarl_tb3)">
     <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model)_1.urdf.xacro" />
@@ -65,27 +64,6 @@
     </node>
 
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg second_tb3) -x $(arg second_tb3_x_pos) -y $(arg second_tb3_y_pos) -z $(arg second_tb3_z_pos) -param robot_description" />
-  </group>
-  ?>
-
-
-  
-  <!-- Third Robot (tb3_3) -->
-  
-  <group ns="$(arg third_tb3)">
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model)_3.urdf.xacro" />
-    <param name="tf_prefix" value="tb3_3_tf" />
-
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-	<param name="use_gui" value="False"/>
-	</node>
-
-    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
-      <param name="publish_frequency" type="double" value="50.0" />
-      <param name="tf_prefix" value="tb3_3_tf" />
-    </node>
-
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg second_tb3) -x $(arg third_tb3_x_pos) -y $(arg third_tb3_y_pos) -z $(arg third_tb3_z_pos) -param robot_description" />
   </group>
   
 
