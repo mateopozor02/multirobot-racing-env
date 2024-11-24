@@ -75,3 +75,12 @@ cd ~/racing_ws/
 catkin_make
 source devel/setup.bash
 ```
+
+## Training
+Three simulation environments were defined for training, each with its own geometry. Furthermore, the reward function and parameters are customizable.
+The training parameters can be found in "env.config", "policy.config", "train.config" under "~/racing_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav/configs/".
+![scenarios](https://github.com/user-attachments/assets/c072c91c-dc8c-41ad-a615-c548a5748789)
+The different scenarios are defined in its own CrowdNav directory. In this project: *CrowdNav* (curve path), *CrowdNav-crosspath*, and *CrowdNav-nowall* are defined. To 
+change the working scenario, change the name of the desired folder to *CrowdNav* and follow the normal workflow. 
+
+
