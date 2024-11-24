@@ -12,11 +12,11 @@ To keep the ROS workspaces separated, the information about the setup and instal
 [here](https://github.com/mateopozor02/traditional-multirobot-env.git). 
 
 ## Contents   
-1. [Build & Install](build-&-install)   
-2. [Training]
-3. [Multi-Robot Setup]
-5. [Test the SARL* agents in Gazebo]   
-7. [Reference]
+1. [Build & Install](#build--install)   
+2. [Training](#training)
+3. [Multi-Robot Setup](#multi-robot-setup)
+5. [Test the SARL* agents in Gazebo](#test-the-sarl-agents-in-gazebo) 
+7. [Reference](#reference)
 
 ## Build & Install 
 To setup the environment, ROS Melodic should be installed on your machine. For this reason, you must be running Ubuntu 18. 
