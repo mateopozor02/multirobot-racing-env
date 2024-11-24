@@ -127,3 +127,61 @@ Then you will get the plots for success rate and accumulated reward across all t
 </div>
 
 ## Multi-Robot Setup
+
+In order to support multiple robots in a single environment, ROS namespaces were used to isolate each robot in execution. 
+This results in a `rqt_graph` with multiple robots, and nodes running under namespaces, sharing only the global map in 
+which they interact. 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/a64e7ae3-2bea-4f9e-9e51-b59661030570" width="1000"/>
+</div>
+
+This behavior is achieved by modifying the ROS launchfile for the environment. This file is located at: `~/racing_ws/src/sarl_dif_env/sarl_star_ros/launch/turtlebot3_sarl_star_world_track_multi1.launch.xml`
+
+To include more agents, you just need to create a new namespace in the launchfile, copying the structure of the other namespaces defined in the file. These
+namespaces already include all the necessary remappings to include new agents in the simulation. 
+
+```xml
+<!-- First Robot -->
+   <group ns="$(arg sarl_tb3)">
+
+      <!-- AMCL for First Robot -->
+      <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl1.launch.xml"/>
+      <include file="$(arg custom_amcl_launch_file)">
+         <arg name="initial_pose_x" value="$(arg sarl_tb3_x_pos)"/>
+         <arg name="initial_pose_y" value="$(arg sarl_tb3_y_pos)"/>
+         <arg name="initial_pose_a" value="0"/>
+      </include>
+
+      <!-- Move Base for First Robot -->
+      <arg name="custom_param_file" default="$(find sarl_star_ros)/param/$(arg laser_type)_costmap_params.yaml"/>
+      <include file="$(find sarl_star_ros)/launch/includes/move_base/move_base1.launch.xml">
+         <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+      </include>
+
+      <!-- SARL_star Planner for First Robot -->
+      <node pkg="sarl_star_ros" type="sarl_star_node1.py" name="sarl_star_node" output="screen">
+        <remap from="/amcl_pose" to="/sarl_tb3/amcl_pose"/>
+        <remap from="/move_base/global_costmap/costmap" to="/sarl_tb3/move_base1/global_costmap/costmap"/>
+        <remap from="/cmd_vel" to="/sarl_tb3/cmd_vel"/>
+        <remap from="/move_base_simple/goal" to="/sarl_tb3/move_base_simple/goal"/>
+        <remap from="/local_goal" to="/sarl_tb3/local_goal"/>
+        <remap from="/odom" to="/sarl_tb3/odom"/>
+        <remap from="/obstacles" to="/sarl_tb3/obstacles"/>
+        <remap from="/trajectory_marker" to="/sarl_tb3/trajectory_marker"/>
+        <remap from="/vehicle_marker" to="/sarl_tb3/vehicle_marker"/>
+        <remap from="/goal_marker" to="/sarl_tb3/goal_marker"/>
+        <remap from="/action_marker" to="/sarl_tb3/action_marker"/>
+      </node>
+
+      <!-- Laser Filter for First Robot -->
+      <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter_sarl_tb3">
+        <rosparam command="load" file="$(find laser_filters)/laserscan_filter.yaml"/>
+        <remap from="/scan" to="/sarl_tb3/scan"/>
+      </node>
+
+      <!-- Obstacle Detector for First Robot -->
+      <include file="$(find obstacle_detector)/launch/nodes.launch"/>
+   </group>
+
+```
