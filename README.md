@@ -83,4 +83,47 @@ The training parameters can be found in "env.config", "policy.config", "train.co
 The different scenarios are defined in its own CrowdNav directory. In this project: *CrowdNav* (curve path), *CrowdNav-crosspath*, and *CrowdNav-nowall* are defined. To 
 change the working scenario, change the name of the desired folder to *CrowdNav* and follow the normal workflow. 
 
+1. Training the value network
+```bash
+cd ~/racing_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav/
+```
+```bash
+python train.py --policy sarl --output_dir data/your_model_name
+```
+This will train the value network with the parameters defined in `~/racing_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav/configs/`. After this, your 
+model will be saved with the name given in the command line argument `--output_dir`.
 
+2. Visualize a test case
+
+To visualize a test case from the trained model, you can run the following commands:
+```bash
+cd ~/racing_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav
+```
+```bash
+python test.py --policy sarl --model_dir data/your_model_name --phase test --visualize --test_case 0
+```
+
+This will generate a GIF with a testcase of your model in the training scenario.
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/27c91a9f-6b67-48c9-a321-2456846ac8ab" width="400"/>
+</div>
+
+3. Plotting the training data
+
+It is possible to obtain important data from the training process, such as accumulated reward or success rate across the training episodes.
+This information can be found in the log file, under `~/racing_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav/data` within the folder of your training.
+
+To get the plots, execute the following commands in your terminal: 
+```bash
+cd ~/racing_ws/src/sarl_dif_env/sarl_star_ros/CrowdNav/crowd_nav
+```
+```bash
+python utils/plot.py data/your_model_name/output.log --plot_sr
+```
+
+Then you will get the plots for success rate and accumulated reward across all training episodes: 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/b79aed1a-93bd-4c5a-a5ab-d84150566408" width="800"/>
+</div>
+
+## Multi-Robot Setup
