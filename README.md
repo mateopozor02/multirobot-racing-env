@@ -202,3 +202,46 @@ if __name__ == '__main__':
     env_config_file = model_dir + 'env.config'
     policy_config_file = model_dir + 'policy.config'
 ```
+
+To launch the simulation environment, first `cd` into the created workspace: `racing_ws`. Then, source into the
+workspace with
+```bash
+source devel/setup.bash
+```
+
+Once sourced into the workspace, export the turtlebot3 model to be used as:
+```bash
+export TURTLEBOT3_MODEL=burger
+```
+
+Finally, launch the simulation environment: 
+```bash
+roslaunch sarl_star_ros turtlebot3_sarl_star_world_track_multi1.launch.xml
+```
+This will automatically run the robots, as they incorporate an automated goal sending mechanism. To modify this feature, 
+see the `sarl_star_node.py` code corresponding to the robot. There, it's possible to modify the navigation goals sent to the robot.
+```python
+try:
+  rospy.init_node('sarl_star_node', anonymous=True)
+  rate = rospy.Rate(4)  # 4Hz, time_step=0.25
+  robot_act = RobotAction()
+  listener_v = tf.TransformListener()
+  listener_g = tf.TransformListener()
+  listener_ob = tf.TransformListener()
+  
+  robot_act.send_goal(partial_goals[0][0], partial_goals[0][1], 0.0, 0.0)
+```
+The behavior in RViz will be similar to this:
+
+[Screencast from 22-10-24 19:32:22.webm](https://github.com/user-attachments/assets/6aae57ff-b96e-4173-b7b9-2f33273d9991)
+
+And with multiple robots and traditional agents: 
+
+[Screencast from 23-11-24 23:08:03.webm](https://github.com/user-attachments/assets/8bb94212-ab64-431e-95e9-6d16083238a5)
+
+## Reference
+SARL* : https://github.com/LeeKeyu/sarl_star
+
+CrowdNav : https://github.com/vita-epfl/CrowdNav
+
+Turtlebot3 : https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/
