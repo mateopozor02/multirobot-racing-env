@@ -185,3 +185,20 @@ namespaces already include all the necessary remappings to include new agents in
    </group>
 
 ```
+
+## Test the SARL* Agents in Gazebo
+
+To test the trained models in Gazebo, make sure the ROS nodes used by the spawned robots point to the correct DRL model. 
+This can be checked in `~/racing_ws/src/sarl_dif_env/sarl_star_ros/scripts/sarl_star_node1.py`. Make sure, you are checking 
+the same `.py` file as defined in the launchfile.
+
+The model being used by the robot can be changed in this file, inside the main function:
+```python
+if __name__ == '__main__':
+    begin_travel = False
+    # set file dirs
+    pack_path = rospkg.RosPack().get_path('sarl_star_ros')
+    model_dir = pack_path + '/CrowdNav/crowd_nav/data/your_output_folder/'
+    env_config_file = model_dir + 'env.config'
+    policy_config_file = model_dir + 'policy.config'
+```
