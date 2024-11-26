@@ -24,7 +24,7 @@ def main():
 
     # define the names of the models you want to plot and the longest episodes you want to show
     #models = ['LSTM-RL', 'SARL', 'OM-SARL']
-    models = ['output_new2_0.4_f1', 'output_new2_0.8_f1', 'output_new3_0.7_f1']
+    models = ['SARL*', 'output_new2_0.8_f1', 'output_new3_0.7_f1']
     max_episodes = 20000
 
     ax1 = ax2 = ax3 = ax4 = None
@@ -84,16 +84,17 @@ def main():
                 _, ax1 = plt.subplots()
             if args.plot_train:
                 ax1.plot(range(len(train_sr_smooth)), train_sr_smooth)
-                ax1_legends.append(models[i])
+                #ax1_legends.append(models[i])
             if args.plot_val:
                 ax1.plot(val_episode, val_sr)
                 ax1_legends.append(models[i])
 
-            ax1.legend(ax1_legends)
+            ax1.legend(["Training"])
             ax1.set_xlabel('Episodes')
             ax1.set_ylabel('Success Rate')
-            ax1.set_title('Success rate')
+            ax1.set_title('SARL*')
             plt.grid(True)
+            #plt.xlim([0, 6000])
             plt.ylim([0.0, 1.0]) 
 
         # plot time
@@ -144,10 +145,10 @@ def main():
                 ax4.plot(val_episode, val_reward)
                 ax4_legends.append(models[i])
 
-            ax4.legend(ax4_legends)
+            ax4.legend(["Training"])
             ax4.set_xlabel('Episodes')
             ax4.set_ylabel('Reward')
-            ax4.set_title('Cumulative Discounted Reward')
+            ax4.set_title('SARL*')
             plt.grid(True)
             plt.ylim([0, 5]) 
 
