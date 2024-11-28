@@ -854,7 +854,7 @@ class CrowdSim(gym.Env):
         y_offset = 0.11
         cmap = plt.cm.get_cmap('hsv', 10)
         robot_color = 'teal'
-        goal_color = 'yellow'
+        goal_color = 'orange'
         arrow_color = 'red'
         arrow_style = patches.ArrowStyle("->", head_length=2, head_width=2)
 

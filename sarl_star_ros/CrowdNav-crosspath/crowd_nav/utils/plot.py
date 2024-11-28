@@ -52,20 +52,33 @@ def main():
             val_time.append(float(r[3]))
             val_reward.append(float(r[4]))
 
-        train_pattern = r"TRAIN in episode (?P<episode>\d+) has success rate: (?P<sr>[0-1].\d+), " \
-                        r"collision rate: (?P<cr>[0-1].\d+), nav time: (?P<time>\d+.\d+), " \
-                        r"total reward: (?P<reward>[-+]?\d+.\d+)"
+        train_pattern = r"TRAIN in episode (?P<episode>\d+) has success rate: (?P<sr>0\.\d+|1\.0+), " \
+                r"collision rate: (?P<cr>0\.\d+|1\.0+), " \
+                r"timeout rate: (?P<tr>0\.\d+|1\.0+), " \
+                r"collisionwall rate: (?P<cwr>0\.\d+|1\.0+), " \
+                r"nav time: (?P<time>\d+(\.\d+)?), " \
+                r"average speed: (?P<speed>\d+(\.\d+)?), " \
+                r"path length: (?P<length>\d+(\.\d+)?), " \
+                r"total reward: (?P<reward>[-+]?\d+(\.\d+)?)"
         train_episode = []
         train_sr = []
         train_cr = []
+        train_tr = []
+        train_cwr = []
         train_time = []
+        train_speed = []
+        train_length = []
         train_reward = []
         for r in re.findall(train_pattern, log):
             train_episode.append(int(r[0]))
             train_sr.append(float(r[1]))
             train_cr.append(float(r[2]))
-            train_time.append(float(r[3]))
-            train_reward.append(float(r[4]))
+            train_tr.append(float(r[3]))
+            train_cwr.append(float(r[4]))
+            train_time.append(float(r[5]))
+            train_speed.append(float(r[6]))
+            train_length.append(float(r[7]))
+            train_reward.append(float(r[11]))
         train_episode = train_episode[:max_episodes]
         train_sr = train_sr[:max_episodes]
         train_cr = train_cr[:max_episodes]
@@ -84,7 +97,7 @@ def main():
                 _, ax1 = plt.subplots()
             if args.plot_train:
                 ax1.plot(range(len(train_sr_smooth)), train_sr_smooth)
-                ax1_legends.append(models[i])
+                ax1_legends.append("Training")
             if args.plot_val:
                 ax1.plot(val_episode, val_sr)
                 ax1_legends.append(models[i])
@@ -92,7 +105,7 @@ def main():
             ax1.legend(ax1_legends)
             ax1.set_xlabel('Number of episodes')
             ax1.set_ylabel('Success Rate')
-            ax1.set_title('')
+            ax1.set_title('SARL*')
             plt.grid(True)
             plt.ylim([0.2, 1.0]) 
 
@@ -137,19 +150,20 @@ def main():
         if args.plot_reward:
             if ax4 is None:
                 _, ax4 = plt.subplots()
+                ax4_legends.append("Training")
             if args.plot_train:
                 ax4.plot(range(len(train_reward_smooth)), train_reward_smooth)
                 #ax4_legends.append(models[i])
             if args.plot_val:
                 ax4.plot(val_episode, val_reward)
-                #ax4_legends.append(models[i])
+                ax4_legends.append("Validation")
 
             ax4.legend(ax4_legends)
             ax4.set_xlabel('Number of episodes')
-            ax4.set_ylabel('Time to reach the goal(s)')
-            ax4.set_title('')
+            ax4.set_ylabel('Reward')
+            ax4.set_title('SARL*')
             plt.grid(True)
-            plt.ylim([5, 60]) 
+            plt.ylim([0, 5]) 
 
     plt.show()
 
