@@ -161,8 +161,8 @@ class RobotAction(object):
 
     def robot_vel_on_map_calculator(self, msg):
         vel_linear = msg.twist.twist.linear
-        listener_v.waitForTransform('/map', '/tb3_2_tf/base_footprint', rospy.Time(0), rospy.Duration(10))
-        trans, rot = listener_v.lookupTransform('/map', '/tb3_2_tf/base_footprint', rospy.Time(0))
+        listener_v.waitForTransform('/map', '/tb3_3_tf/base_footprint', rospy.Time(0), rospy.Duration(10))
+        trans, rot = listener_v.lookupTransform('/map', '/tb3_3_tf/base_footprint', rospy.Time(0))
         #listener_v.waitForTransform('/map', '/base_footprint', rospy.Time(0), rospy.Duration(10))
         #trans, rot = listener_v.lookupTransform('/map', '/base_footprint', rospy.Time(0))
         # rotate vector 'vel_linear' by quaternion 'rot'
@@ -235,7 +235,7 @@ class RobotAction(object):
 
     def get_goal_on_map(self, msg):
         self.Is_lg_Received = True
-        listener_g.waitForTransform('/map', '/tb3_2_tf/odom', rospy.Time(0), rospy.Duration(10))
+        listener_g.waitForTransform('/map', '/tb3_3_tf/odom', rospy.Time(0), rospy.Duration(10))
         #listener_g.waitForTransform('/map', '/odom', rospy.Time(0), rospy.Duration(10))
         tfmsg = listener_g.transformPose("/map", msg)
         #print("Local goal is received: ", tfmsg.pose.position.x, tfmsg.pose.position.y)
@@ -272,7 +272,7 @@ class RobotAction(object):
         self.goal_marker_pub.publish(marker)
 
     def visualize_trajectory(self, position, orientation):
-        # Purple track for robot trajectory over time
+        # Orange track for robot trajectory over time
         marker = Marker()
         marker.header.stamp = rospy.Time.now()
         marker.header.frame_id = '/map'
@@ -283,7 +283,7 @@ class RobotAction(object):
         marker.pose.position = position
         marker.pose.orientation = orientation
         marker.scale = Vector3(x=0.1, y=0.1, z=0.1)
-        marker.color = ColorRGBA(r=0.5, b=0.8, a=1.0)
+        marker.color = ColorRGBA(1.0, 0.5, 0.0, 1.0)  # Orange color for the points
         marker.lifetime = rospy.Duration()
         self.trajectory_marker_pub.publish(marker)
 
@@ -424,7 +424,7 @@ if __name__ == '__main__':
     begin_travel = False
     # set file dirs
     pack_path = rospkg.RosPack().get_path('sarl_star_ros')
-    model_dir = pack_path + '/CrowdNav-nowall/crowd_nav/data/output_tesis_1/'
+    model_dir = pack_path + '/CrowdNav-crosspath/crowd_nav/data/output_thesis_1/'
     env_config_file = model_dir + 'env.config'
     policy_config_file = model_dir + 'policy.config'
 
@@ -462,7 +462,7 @@ if __name__ == '__main__':
     policy.gc = []
     robot = Robot()
     
-    partial_goals = [(17.0, 3.7)]
+    partial_goals = [(17.5, 3.7)]
 
     goals_reached = 0
 

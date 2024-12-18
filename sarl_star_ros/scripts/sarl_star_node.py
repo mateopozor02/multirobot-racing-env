@@ -424,7 +424,7 @@ if __name__ == '__main__':
     begin_travel = False
     # set file dirs
     pack_path = rospkg.RosPack().get_path('sarl_star_ros')
-    model_dir = pack_path + '/CrowdNav/crowd_nav/data/output_alisher_curvepath_5_5/'
+    model_dir = pack_path + '/CrowdNav-nowall/crowd_nav/data/output_tesis_1/'
     env_config_file = model_dir + 'env.config'
     policy_config_file = model_dir + 'policy.config'
 
@@ -461,16 +461,8 @@ if __name__ == '__main__':
     policy.time_step = 0.25
     policy.gc = []
     robot = Robot()
-
-    #partial_goals = [(7, 7.7), (6.8, 9.2), (5.3, 10), (-3.75, 10.65), (-5.29, 10.6), (-6.55, 12.7), (-6.72, 15.96),
-    #                 (-7.39, 17.1), (-12.98, 17.6), (-15.12, 16.7), (-15.37, 10.33), (-11.18, 5.6), (-15.29, -5.74),
-    #                 (-0.69, -9.6), (-0.28, -19.11), (6.15, -25.74), (13.71, -20.51), (11.09, -20.43), (7.67, -16.71), (7.45, -4.65)]
-
-    #partial_goals = [(7, 7.7), (4.69, 10.54), (-3.75, 10.65), (-6.86, 13.48), (-7.27, 16.53), (-14.31, 17.48), 
-    #                 (-15.37, 10.33), (-11.18, 5.6), (-11.29, -0.51), (-15.41, -5.25), (-0.69, -9.6), (-0.28, -19.11),
-    #                 (6.15, -25.74), (-13.3, -25.7), (13.71, -20.51), (10.91, -20.47), (7.87, -16.71), (7.45, -4.65)]
     
-    partial_goals = [(5.3, 10), (7, 8.2)]
+    partial_goals = [(14.0, 8.0)]
 
     goals_reached = 0
 
@@ -482,7 +474,7 @@ if __name__ == '__main__':
         listener_g = tf.TransformListener()
         listener_ob = tf.TransformListener()
 
-        robot_act.send_goal(partial_goals[0][0], partial_goals[0][1], 0.0, 0.0)
+        #robot_act.send_goal(partial_goals[0][0], partial_goals[0][1], 0.0, 0.0)
 
         #robot_act.send_goal(7.6, 6.73, 0.0, 0.0)
         

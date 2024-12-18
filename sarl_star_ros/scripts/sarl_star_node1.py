@@ -26,7 +26,7 @@ import threading
 HUMAN_RADIUS = 0.3
 #Update robot radius to fit turtle bot 3 burger
 ROBOT_RADIUS = 0.12
-ROBOT_V_PREF = 0.22
+ROBOT_V_PREF = 0.25
 DISCOMFORT_DIST = 0
 TIME_LIMIT = 300
 GOAL_TOLERANCE = 0.3
@@ -272,7 +272,7 @@ class RobotAction(object):
         self.goal_marker_pub.publish(marker)
 
     def visualize_trajectory(self, position, orientation):
-        # Purple track for robot trajectory over time
+        # Green track for robot trajectory over time
         marker = Marker()
         marker.header.stamp = rospy.Time.now()
         marker.header.frame_id = '/map'
@@ -283,7 +283,7 @@ class RobotAction(object):
         marker.pose.position = position
         marker.pose.orientation = orientation
         marker.scale = Vector3(x=0.1, y=0.1, z=0.1)
-        marker.color = ColorRGBA(r=0.5, b=0.8, a=1.0)
+        marker.color = ColorRGBA(0.0, 1.0, 0.0, 1.0)  # Green color for the points
         marker.lifetime = rospy.Duration()
         self.trajectory_marker_pub.publish(marker)
 
@@ -424,7 +424,8 @@ if __name__ == '__main__':
     begin_travel = False
     # set file dirs
     pack_path = rospkg.RosPack().get_path('sarl_star_ros')
-    model_dir = pack_path + '/CrowdNav/crowd_nav/data/output_alisher_curvepath_5_5/'
+    model_dir = pack_path + '/CrowdNav/crowd_nav/data/output_curve_thesis_3/'
+    print("Model dir: ", model_dir)
     env_config_file = model_dir + 'env.config'
     policy_config_file = model_dir + 'policy.config'
 
@@ -462,24 +463,7 @@ if __name__ == '__main__':
     policy.gc = []
     robot = Robot()
 
-    #partial_goals = [(7, 7.7), (6.8, 9.2), (5.3, 10), (-3.75, 10.65), (-5.29, 10.6), (-6.55, 12.7), (-6.72, 15.96),
-    #                 (-7.39, 17.1), (-12.98, 17.6), (-15.12, 16.7), (-15.37, 10.33), (-11.18, 5.6), (-15.29, -5.74),
-    #                 (-0.69, -9.6), (-0.28, -19.11), (6.15, -25.74), (13.71, -20.51), (11.09, -20.43), (7.67, -16.71), (7.45, -4.65)]
-
-    #partial_goals = [(7, 7.7), (4.69, 10.54), (-3.75, 10.65), (-6.86, 13.48), (-7.27, 16.53), (-14.31, 17.48), 
-    #                 (-15.37, 10.33), (-11.18, 5.6), (-11.29, -0.51), (-15.41, -5.25), (-0.69, -9.6), (-0.28, -19.11),
-    #                 (6.15, -25.74), (-13.3, -25.7), (13.71, -20.51), (10.91, -20.47), (7.87, -16.71), (7.45, -4.65)]
-    
-    #partial_goals = [(5.3, 10), (7, 7.5), (8, -4.6), (7.84, -8.6), (8.0, -17), (9.5, -19), (11, -20), (14, -20), (16, -23), 
-    #                 (14.5, -26), (6.1, -25), (0, -19.8), (0, -8), (-3.5, -4.8), (-7.4, -8.5), (-9.7, -13.5), (-14.4, -11.4), (-15, -5.6)
-    #                 (-10.7, -0.6), (-10.7, 5.3), (-15.1, 10.78), (-15.11, 16.11), (-12.96, 17.72), (-8.46, 17.4), (-6.2, 16), (-6, 12), 
-    #                 (-3.9, 10.2), (-1, 10)]
-
-    partial_goals = [(5.3, 10), (7, 7.5), (8, -4.6), (7.84, -8.6), (8.0, -17), (9.5, -19), (11, -20), (14, -20), (16, -23), 
-                 (14.5, -26), (6.1, -25), (0, -19.8), (0, -8), (-3.5, -4.8), (-7.4, -8.5), (-9.7, -13.5), (-14.4, -11.4), 
-                 (-15, -5.6), (-10.7, -0.6), (-10.7, 5.3), (-15.1, 10.78), (-15.11, 16.11), (-12.96, 17.72), (-8.46, 17.4), 
-                 (-6.2, 16), (-6, 12), (-3.9, 10.2), (-1, 10)]
-
+    partial_goals = [(16.5, 3.7)]
 
     goals_reached = 0
 
@@ -490,11 +474,9 @@ if __name__ == '__main__':
         listener_v = tf.TransformListener()
         listener_g = tf.TransformListener()
         listener_ob = tf.TransformListener()
-
+        # Wait before sending the goal
+        rospy.sleep(10)
         robot_act.send_goal(partial_goals[0][0], partial_goals[0][1], 0.0, 0.0)
-
-        #robot_act.send_goal(7.6, 6.73, 0.0, 0.0)
-        
 
         while not rospy.is_shutdown():
 
