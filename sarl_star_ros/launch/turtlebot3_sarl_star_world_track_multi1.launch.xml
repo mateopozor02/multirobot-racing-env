@@ -8,20 +8,20 @@
    <arg name="third_tb3" default="tb3_3"/>
 
    <!-- Define initial positions -->
-   <arg name="sarl_tb3_x_pos" default="-1.20"/>
-   <arg name="sarl_tb3_y_pos" default="10.75"/>
+   <arg name="sarl_tb3_x_pos" default="14.0"/>
+   <arg name="sarl_tb3_y_pos" default="7.5"/>
    <arg name="sarl_tb3_z_pos" default="0"/>
 
-   <arg name="second_tb3_x_pos" default="-1.20"/>
-   <arg name="second_tb3_y_pos" default="10.0"/>
+   <arg name="second_tb3_x_pos" default="14.0"/>
+   <arg name="second_tb3_y_pos" default="8.0"/>
    <arg name="second_tb3_z_pos" default="0"/>
 
-   <arg name="third_tb3_x_pos" default="-1.54"/>
-   <arg name="third_tb3_y_pos" default="10.6"/>
+   <arg name="third_tb3_x_pos" default="14.0"/>
+   <arg name="third_tb3_y_pos" default="8.5"/>
    <arg name="third_tb3_z_pos" default="0"/>
 
    <!-- Gazebo simulation -->
-   <arg name="world_file" default="$(find sarl_star_ros)/worlds/pista_world.world"/>
+   <arg name="world_file" default="$(find sarl_star_ros)/worlds/centered_track.world"/>
    <include file="$(find sarl_star_ros)/launch/turtlebot3_gazebo1.launch.xml">    
      <arg name="world_file" value="$(arg world_file)"/>
    </include>
@@ -112,6 +112,48 @@
       <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter_tb3_2">
         <rosparam command="load" file="$(find laser_filters)/laserscan_filter.yaml"/>
         <remap from="/scan" to="/tb3_2/scan"/>
+      </node>
+
+      <!-- Obstacle Detector for Second Robot -->
+      <include file="$(find obstacle_detector)/launch/nodes.launch"/>
+   </group>
+
+   <!-- Third Robot -->
+   <group ns="$(arg third_tb3)">
+	
+      <!--AMCL for Second Robot-->
+      <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl3.launch.xml"/>
+      <include file="$(arg custom_amcl_launch_file)">
+         <arg name="initial_pose_x" value="$(arg third_tb3_x_pos)"/>
+         <arg name="initial_pose_y" value="$(arg third_tb3_y_pos)"/>
+         <arg name="initial_pose_a" value="0"/>
+      </include>
+
+      <!--Move Base for Second Robot -->
+      <arg name="custom_param_file" default="$(find sarl_star_ros)/param/$(arg laser_type)_costmap_params.yaml"/>
+      <include file="$(find sarl_star_ros)/launch/includes/move_base/move_base3.launch.xml">
+         <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+      </include>
+      
+      <!-- SARL_star Planner for Second Robot -->
+      <node pkg="sarl_star_ros" type="sarl_star_node3.py" name="sarl_star_node" output="screen">
+        <remap from="/amcl_pose" to="/tb3_3/amcl_pose"/>
+        <remap from="/move_base/global_costmap/costmap" to="/tb3_3/move_base3/global_costmap/costmap"/>
+        <remap from="/cmd_vel" to="/tb3_3/cmd_vel"/>
+        <remap from="/move_base_simple/goal" to="/tb3_3/move_base_simple/goal"/>
+        <remap from="/local_goal" to="/tb3_3/local_goal"/>
+        <remap from="/odom" to="/tb3_3/odom"/>
+        <remap from="/obstacles" to="/tb3_3/obstacles"/>
+        <remap from="/trajectory_marker" to="/tb3_3/trajectory_marker"/>
+        <remap from="/vehicle_marker" to="/tb3_3/vehicle_marker"/>
+        <remap from="/goal_marker" to="/tb3_3/goal_marker"/>
+        <remap from="/action_marker" to="/tb3_3/action_marker"/>
+      </node>
+
+     <!-- Laser Filter for Second Robot -->
+      <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter_tb3_3">
+        <rosparam command="load" file="$(find laser_filters)/laserscan_filter.yaml"/>
+        <remap from="/scan" to="/tb3_3/scan"/>
       </node>
 
       <!-- Obstacle Detector for Second Robot -->

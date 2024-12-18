@@ -7,8 +7,8 @@
    <arg name="second_tb3" default="tb3_2"/>
 
    <!-- Define initial positions -->
-   <arg name="sarl_tb3_x_pos" default="-1.20"/>
-   <arg name="sarl_tb3_y_pos" default="10.39"/>
+   <arg name="sarl_tb3_x_pos" default="8.0"/>
+   <arg name="sarl_tb3_y_pos" default="7.5"/>
    <arg name="sarl_tb3_z_pos" default="0"/>
 
    <arg name="second_tb3_x_pos" default="-3.20"/>
@@ -16,8 +16,8 @@
    <arg name="second_tb3_z_pos" default="0"/>
 
    <!-- Gazebo simulation -->
-   <arg name="world_file" default="$(find sarl_star_ros)/worlds/pista_world.world"/>
-   <include file="$(find sarl_star_ros)/launch/turtlebot3_gazebo1.launch">    
+   <arg name="world_file" default="$(find sarl_star_ros)/worlds/centered_track.world"/>
+   <include file="$(find sarl_star_ros)/launch/turtlebot3_gazebo1.launch.xml">    
      <arg name="world_file" value="$(arg world_file)"/>
    </include>
 

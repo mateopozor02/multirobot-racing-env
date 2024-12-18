@@ -7,7 +7,7 @@
    <!-- <include file="$(find turtlebot_navigation)/laser/driver/$(arg laser_type)_laser.launch" /> -->
 
    <!-- Gazebo simulation -->
-   <arg name="world_file" default="$(find sarl_star_ros)/worlds/pista_world.world"/>
+   <arg name="world_file" default="$(find sarl_star_ros)/worlds/centered_track.world"/>
 
    <include file="$(find sarl_star_ros)/launch/turtlebot3_gazebo.launch">    
      <arg name="world_file" value = "$(arg world_file)"/>
@@ -29,8 +29,8 @@
    <!-- AMCL -->
    <arg name="custom_amcl_launch_file" default="$(find sarl_star_ros)/launch/includes/amcl/amcl.launch.xml"/>
 
-   <arg name="initial_pose_x" default="-1.20"/>
-   <arg name="initial_pose_y" default="10.39"/>
+   <arg name="initial_pose_x" default="8.0"/>
+   <arg name="initial_pose_y" default="8.0"/>
    <arg name="initial_pose_a" default="0"/>
 
    <include file="$(arg custom_amcl_launch_file)">

@@ -8,20 +8,20 @@
 
   <arg name="odom_topic" default="/tb3_2/odom" />
   <arg name="laser_topic" default="/tb3_2/scan" />
-  <arg name="custom_param_file" default="$(find sarl_star_ros)/param/dummy.yaml"/>
+  <arg name="custom_param_file" default="$(find sarl_star_ros)/multiparam/param2/dummy.yaml"/>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base2" output="screen">
-    <rosparam file="$(find sarl_star_ros)/param/config/odom/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find sarl_star_ros)/param/config/odom/costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find sarl_star_ros)/param/config/odom/local_costmap_params.yaml" command="load" />
-    <rosparam file="$(find sarl_star_ros)/param/config/odom/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find sarl_star_ros)/param/config/odom/base_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find sarl_star_ros)/param/dwa_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find sarl_star_ros)/param/config/nav_obstacles_params.yaml" command="load" />
-    <!--<rosparam file="$(find turtlebot_navigation)/param/dwa_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot_navigation)/param/move_base_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot_navigation)/param/global_planner_params.yaml" command="load" />
-    <rosparam file="$(find turtlebot_navigation)/param/navfn_global_planner_params.yaml" command="load" />-->
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/config/odom/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/config/odom/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/config/odom/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/config/odom/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/config/odom/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find sarl_star_ros)/multiparam/param2/config/nav_obstacles_params.yaml" command="load" />
+    <!--<rosparam file="$(find turtlebot_navigation)/multiparam/param2/dwa_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot_navigation)/multiparam/param2/move_base_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot_navigation)/multiparam/param2/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find turtlebot_navigation)/multiparam/param2/navfn_global_planner_params.yaml" command="load" />-->
     <!-- external params file that could be loaded into the move_base namespace
     <rosparam file="$(arg custom_param_file)" command="load" />-->
 

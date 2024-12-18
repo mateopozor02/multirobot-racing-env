@@ -2,8 +2,8 @@ local_costmap:
    global_frame: /odom
    #global_frame: /odom_combined
    robot_base_frame: /base_footprint
-   update_frequency: 5
-   publish_frequency: 5
+   update_frequency: 4.75
+   publish_frequency: 4.75
    static_map: false
    rolling_window: true
    width: 5.0
