@@ -209,7 +209,7 @@ class SARL(MultiHumanRL):
                 if self.with_costmap is True:
                     cost = self.compute_cost(next_self_state_further)
                     if cost > 0:
-                        print("********** Abort action:", action, " with cost:", cost, " that will hit the obstacles.")
+                        #print("********** Abort action:", action, " with cost:", cost, " that will hit the obstacles.")
                         continue
                 
             

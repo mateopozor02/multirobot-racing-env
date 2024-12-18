@@ -95,12 +95,12 @@ class CrowdSim(gym.Env):
         self.collision_penalty = config.getfloat('reward', 'collision_penalty')
         self.discomfort_dist = config.getfloat('reward', 'discomfort_dist')
         self.discomfort_penalty_factor = config.getfloat('reward', 'discomfort_penalty_factor')
-        self.heading_reward = config.getfloat('reward', 'heading_reward')
-        self.maintaining_reward = config.getfloat('reward', 'maintaining_reward')
-        self.standard_variation = config.getfloat('reward', 'standard_variation')
-        self.collision_wall_penalty = config.getfloat('reward', 'collision_wall_penalty')
-        self.R_safe = config.getfloat('reward', 'R_safe')
-        self.R_min = config.getfloat('reward', 'R_min')
+        #self.heading_reward = config.getfloat('reward', 'heading_reward')
+        #self.maintaining_reward = config.getfloat('reward', 'maintaining_reward')
+        #self.standard_variation = config.getfloat('reward', 'standard_variation')
+        #self.collision_wall_penalty = config.getfloat('reward', 'collision_wall_penalty')
+        #self.R_safe = config.getfloat('reward', 'R_safe')
+        #self.R_min = config.getfloat('reward', 'R_min')
         # Please input four points to make block area
         # Please input the center points, radius1, radius2
         self.block_area1 = [[-2,5],[-6,5],[-6,2],[-2,2]]
